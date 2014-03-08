@@ -12,6 +12,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 	
 	public GoogleAuthClient(KeySecretPair pair) {
 		super(new GoogleOAuthServiceImpl(pair));
+		this.service.setScope("email");
 	}
 
 	public AuthenticatedUser verifyUser(HttpServletRequest request) {
