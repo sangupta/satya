@@ -10,14 +10,8 @@ public class GoogleAuthClient extends BaseAuthClient {
 	
 	public static final String OAUTH2_ENDPOINT = "https://accounts.google.com/o/oauth2/auth";
 	
-	private final GoogleOAuthServiceImpl service;
-	
 	public GoogleAuthClient(KeySecretPair pair) {
-		this.service = new GoogleOAuthServiceImpl();
-	}
-
-	public String getLoginRedirectURL(String successUrl) {
-		return null;
+		super(new GoogleOAuthServiceImpl(pair));
 	}
 
 	public AuthenticatedUser verifyUser(HttpServletRequest request) {

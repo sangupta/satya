@@ -11,7 +11,7 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.GoogleAuthClient;
 
-public class AuthManager {
+public abstract class AuthManager {
 	
 	private static final Map<AuthProvider, AuthClient> AUTH_CLIENTS = new HashMap<AuthProvider, AuthClient>();
 

@@ -15,6 +15,11 @@ public abstract class BaseAuthClient implements AuthClient {
 	}
 	
 	@Override
+	public String getLoginRedirectURL(String successUrl) {
+		return service.getLoginURL(successUrl);
+	}
+	
+	@Override
 	public boolean signOut() {
 		return false;
 	}
