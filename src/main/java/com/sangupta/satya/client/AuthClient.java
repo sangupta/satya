@@ -23,7 +23,6 @@ package com.sangupta.satya.client;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sangupta.jerry.http.WebResponse;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;

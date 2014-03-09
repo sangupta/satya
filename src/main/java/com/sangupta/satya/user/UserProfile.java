@@ -1,6 +1,35 @@
+/**
+ *
+ * satya - social authentication framework
+ * Copyright (c) 2014, Sandeep Gupta
+ * 
+ * http://www.sangupta/projects/satya
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ */
+
 package com.sangupta.satya.user;
 
-public class UserProfile {
+import java.security.Principal;
+
+/**
+ * The value object that holds all details of the user.
+ * 
+ * @author sangupta
+ *
+ */
+public class UserProfile implements Principal {
 	
 	private String userID;
 
@@ -23,6 +52,41 @@ public class UserProfile {
 	private String profileLink;
 	
 	private String profileImageURL;
+	
+	@Override
+	public String getName() {
+		if(this.displayName != null) {
+			return this.displayName;
+		}
+		
+		if(this.fullName != null) {
+			return this.fullName;
+		}
+		
+		return this.firstName;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		
+		if(this == obj) {
+			return true;
+		}
+		
+		if(!(obj instanceof UserProfile)) {
+			return false;
+		}
+
+		return this.userID.equals(((UserProfile) obj).userID);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.userID.hashCode();
+	}
 	
 	// Usual accessors follow
 
@@ -179,5 +243,5 @@ public class UserProfile {
 	public void setProfileLink(String profileLink) {
 		this.profileLink = profileLink;
 	}
-	
+
 }

@@ -19,7 +19,7 @@
  * 
  */
 
-package com.sangupta.satya.client;
+package com.sangupta.satya.client.impl;
 
 import java.util.Map;
 
@@ -31,6 +31,7 @@ import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.AuthenticatedUser;
+import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;
 

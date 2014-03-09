@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
-import com.sangupta.satya.client.GoogleAuthClient;
+import com.sangupta.satya.client.impl.GoogleAuthClient;
 
 /**
  * 
