@@ -19,12 +19,15 @@
  * 
  */
 
-package com.sangupta.satya.client;
+package com.sangupta.satya.client.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.scope.FacebookScopes;
+import com.sangupta.jerry.oauth.service.impl.FacebookOAuthServiceImpl;
 import com.sangupta.satya.AuthenticatedUser;
+import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.UserProfile;
 
 /**
@@ -32,27 +35,26 @@ import com.sangupta.satya.user.UserProfile;
  * @author sangupta
  *
  */
-public interface AuthClient {
-	
-	public String getLoginRedirectURL(String successUrl);
-	
-	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL);
-
-	public boolean signOut();
+public class FacebookAuthClient extends BaseAuthClient {
 
 	/**
-	 * Fetch the user's profile.
 	 * 
-	 * @return
+	 * @param keySecretPair
 	 */
-	public UserProfile getUserProfile(KeySecretPair accessPair);
-	
-	/**
-	 * Make a HTTP GET request and return its response.
-	 *  
-	 * @param url
-	 * @return
-	 */
-	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz);
-	
+	public FacebookAuthClient(KeySecretPair keySecretPair) {
+		super(new FacebookOAuthServiceImpl(keySecretPair), FacebookScopes.EMAIL);
+	}
+
+	@Override
+	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserProfile getUserProfile(KeySecretPair accessPair) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -120,14 +120,14 @@ public abstract class AuthManager {
 	 * @param request
 	 * @return
 	 */
-	public static AuthenticatedUser authenticateUser(HttpServletRequest request) {
+	public static AuthenticatedUser authenticateUser(HttpServletRequest request, String redirectURL) {
 		// decipher the authprovider based on the request
 		AuthClient client = decipherAuthClientFromRequest(request);
 		if(client == null) {
 			throw new AssertionError("Unable to detect the authentication client from the callback that was received");
 		}
 		
-		return client.verifyUser(request);
+		return client.verifyUser(request, redirectURL);
 	}
 
 	/**

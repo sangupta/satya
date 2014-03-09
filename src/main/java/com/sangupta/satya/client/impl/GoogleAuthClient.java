@@ -42,13 +42,11 @@ import com.sangupta.satya.user.UserProfile;
  */
 public class GoogleAuthClient extends BaseAuthClient {
 	
-	public static final String OAUTH2_ENDPOINT = "https://accounts.google.com/o/oauth2/auth";
-	
 	public GoogleAuthClient(KeySecretPair pair) {
 		super(new GoogleOAuthServiceImpl(pair), "email profile");
 	}
 
-	public AuthenticatedUser verifyUser(HttpServletRequest request) {
+	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL) {
 		// extract the code from the request parameter
 		String errorCode = request.getParameter("error");
 		if(AssertUtils.isNotEmpty(errorCode)) {
@@ -65,7 +63,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 		
 		System.out.println("Using google verification code: " + code);
 		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(code);
+		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(code, redirectURL);
 		if(AssertUtils.isEmpty(response)) {
 			return null;
 		}
