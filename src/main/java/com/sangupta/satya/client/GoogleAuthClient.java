@@ -22,8 +22,6 @@
 package com.sangupta.satya.client;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +32,7 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
+import com.sangupta.satya.user.UserProfile;
 
 /**
  * 
@@ -78,6 +77,26 @@ public class GoogleAuthClient extends BaseAuthClient {
 
 	public boolean signOut() {
 		return false;
+	}
+
+	@Override
+	public UserProfile getUserProfile(KeySecretPair accessPair) {
+		String url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
+		
+		@SuppressWarnings("unchecked")
+		Map<String, String> map = this.getUsingJson(accessPair, url, Map.class);
+		
+		UserProfile profile = new UserProfile();
+		profile.setUserID(map.get("id"));
+		profile.setEmail(map.get("email"));
+		profile.setFullName(map.get("name"));
+		profile.setFirstName(map.get("given_name"));
+		profile.setLastName(map.get("family_name"));
+		profile.setProfileLink(map.get("link"));
+		profile.setProfileImageURL(map.get("picture"));
+		profile.setGender(map.get("gender"));
+		
+		return profile;
 	}
 
 }

@@ -21,11 +21,34 @@
 
 package com.sangupta.satya;
 
+import com.sangupta.jerry.http.WebRequest;
+import com.sangupta.satya.user.UserProfile;
+
 /**
  * 
  * @author sangupta
  *
  */
 public interface AuthenticatedUser {
+
+	/**
+	 * Get the user profile.
+	 * 
+	 * @return
+	 */
+	public UserProfile getUserProfile();
+
+	/**
+	 * Sign the request.
+	 * 
+	 * @param request
+	 */
+	public void signRequest(WebRequest request);
+
+	/**
+	 * Sign out the user.
+	 * 
+	 */
+	public void signOut();
 	
 }

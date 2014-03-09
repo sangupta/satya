@@ -23,7 +23,10 @@ package com.sangupta.satya.client;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sangupta.jerry.http.WebResponse;
+import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.AuthenticatedUser;
+import com.sangupta.satya.user.UserProfile;
 
 /**
  * 
@@ -37,5 +40,20 @@ public interface AuthClient {
 	public AuthenticatedUser verifyUser(HttpServletRequest request);
 
 	public boolean signOut();
+
+	/**
+	 * Fetch the user's profile.
+	 * 
+	 * @return
+	 */
+	public UserProfile getUserProfile(KeySecretPair accessPair);
+	
+	/**
+	 * Make a HTTP GET request and return its response.
+	 *  
+	 * @param url
+	 * @return
+	 */
+	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz);
 	
 }

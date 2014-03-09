@@ -21,7 +21,13 @@
 
 package com.sangupta.satya.client;
 
+import com.sangupta.jerry.http.WebInvoker;
+import com.sangupta.jerry.http.WebRequest;
+import com.sangupta.jerry.http.WebRequestMethod;
+import com.sangupta.jerry.http.WebResponse;
+import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.service.OAuthService;
+import com.sangupta.jerry.util.GsonUtils;
 
 /**
  * 
@@ -52,5 +58,23 @@ public abstract class BaseAuthClient implements AuthClient {
 	public boolean signOut() {
 		return false;
 	}
-	
+
+	@Override
+	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz) {
+		WebRequest request = WebInvoker.getWebRequest(url, WebRequestMethod.GET);
+		this.service.signRequest(request, accessPair);
+		WebResponse response = WebInvoker.executeSilently(request);
+		if(response != null) {
+			System.out.println("Response: " + response.trace());
+			System.out.println(response.getContent());
+		}
+		
+		if(!response.isSuccess()) {
+			return null;
+		}
+		
+		String content = response.getContent();
+		System.out.println("Webresponse: " + content);
+		return GsonUtils.getGson().fromJson(content, clazz);
+	}
 }

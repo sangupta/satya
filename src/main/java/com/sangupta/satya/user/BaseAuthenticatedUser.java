@@ -21,6 +21,7 @@
 
 package com.sangupta.satya.user;
 
+import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.AuthClient;
@@ -35,22 +36,22 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	/**
 	 * The access token obtained from the server
 	 */
-	private final KeySecretPair accessPair;
+	private KeySecretPair accessPair;
 	
 	/**
 	 * The refresh token obtained from the server
 	 */
-	private final String refreshToken;
+	private String refreshToken;
 	
 	/**
 	 * The time in millis when the token expires
 	 */
-	private final long expiry;
+	private long expiry;
 	
 	/**
 	 * The authentication client to use
 	 */
-	private final AuthClient authClient;
+	private AuthClient authClient;
 	
 	/**
 	 * 
@@ -64,6 +65,24 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 		this.expiry = System.currentTimeMillis() + expiresIn;
 		
 		this.authClient = authClient;
+	}
+	
+	@Override
+	public UserProfile getUserProfile() {
+		return this.authClient.getUserProfile(this.accessPair);
+	}
+	
+	@Override
+	public void signOut() {
+		this.accessPair = null;
+		this.refreshToken = null;
+		this.expiry = 0;
+		this.authClient.signOut();
+	}
+
+	@Override
+	public void signRequest(WebRequest request) {
+		//
 	}
 
 }
