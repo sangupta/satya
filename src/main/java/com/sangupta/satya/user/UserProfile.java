@@ -79,12 +79,20 @@ public class UserProfile implements Principal {
 		if(!(obj instanceof UserProfile)) {
 			return false;
 		}
+		
+		if(this.userID == null) {
+			return false;
+		}
 
 		return this.userID.equals(((UserProfile) obj).userID);
 	}
 	
 	@Override
 	public int hashCode() {
+		if(this.userID == null) {
+			return -1;
+		}
+		
 		return this.userID.hashCode();
 	}
 	

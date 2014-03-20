@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
+import com.sangupta.satya.client.impl.FacebookAuthClient;
 import com.sangupta.satya.client.impl.GoogleAuthClient;
 
 /**
@@ -62,7 +63,11 @@ public abstract class AuthManager {
 			switch(provider) {
 				case Google:
 					AUTH_CLIENTS.put(provider, new GoogleAuthClient(pair));
-					return;
+					continue;
+					
+				case Facebook:
+					AUTH_CLIENTS.put(provider, new FacebookAuthClient(pair));
+					continue;
 					
 				default:
 					// TODO: do nothing for now - change to throw exception once complete
@@ -138,7 +143,7 @@ public abstract class AuthManager {
 	 */
 	private static AuthClient decipherAuthClientFromRequest(HttpServletRequest request) {
 		// TODO: let's make everything work for now
-		return AUTH_CLIENTS.get(AuthProvider.Google);
+		return AUTH_CLIENTS.get(AuthProvider.Facebook);
 	}
 	
 	public static AuthClient getAuthClient(AuthProvider provider) {

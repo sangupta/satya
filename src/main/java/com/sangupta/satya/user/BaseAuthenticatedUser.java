@@ -23,6 +23,7 @@ package com.sangupta.satya.user;
 
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.util.StringUtils;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.AuthClient;
 
@@ -52,6 +53,18 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	 * The authentication client to use
 	 */
 	private AuthClient authClient;
+	
+	/**
+	 * 
+	 * @param accessToken
+	 * @param accessSecret
+	 * @param refreshToken
+	 * @param expiresIn
+	 * @param authClient
+	 */
+	public BaseAuthenticatedUser(String accessToken, String accessSecret, String refreshToken, String expiresIn, AuthClient authClient) {
+		this(accessToken, accessSecret, refreshToken, StringUtils.getLongValue(expiresIn, 3600), authClient);
+	}
 	
 	/**
 	 * 

@@ -26,10 +26,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.extractor.JSONExtractor;
 import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.jerry.util.AssertUtils;
-import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
@@ -68,9 +68,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 			return null;
 		}
 		
-		@SuppressWarnings("unchecked")
-		Map<String, String> map = GsonUtils.getGson().fromJson(response, Map.class);
-		
+		Map<String, String> map = new JSONExtractor().extractTokens(response);
     	return new BaseAuthenticatedUser(map.get("access_token"), "", map.get("refresh_token"), 3600, this);
 	}
 
