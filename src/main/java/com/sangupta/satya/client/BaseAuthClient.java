@@ -42,23 +42,42 @@ public abstract class BaseAuthClient implements AuthClient {
 	 */
 	protected final OAuthService service;
 	
+	/**
+	 * The scopes to use when requesting permissions
+	 */
 	protected final String scope;
 	
+	/**
+	 * Constructor that takes in the final {@link OAuthService} to use and the
+	 * scopes that we need to interact with.
+	 * 
+	 * @param service
+	 * @param scope
+	 */
 	public BaseAuthClient(OAuthService service, String scope) {
 		this.service = service;
 		this.scope = scope;
 	}
 	
+	/**
+	 * @see AuthClient#getLoginRedirectURL(String)
+	 */
 	@Override
 	public String getLoginRedirectURL(String successUrl) {
 		return service.getLoginURL(successUrl, scope);
 	}
 	
+	/**
+	 * @see AuthClient#signOut()
+	 */
 	@Override
 	public boolean signOut() {
 		return false;
 	}
 
+	/**
+	 * @see AuthClient#getUsingJson(KeySecretPair, String, Class)
+	 */
 	@Override
 	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz) {
 		WebRequest request = WebInvoker.getWebRequest(url, WebRequestMethod.GET);
@@ -79,7 +98,7 @@ public abstract class BaseAuthClient implements AuthClient {
 	}
 	
 	/**
-	 * 
+	 * @see AuthClient#signRequest(KeySecretPair, WebRequest)
 	 */
 	@Override
 	public void signRequest(KeySecretPair accessPair, WebRequest request) {

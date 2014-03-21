@@ -29,16 +29,39 @@ import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;
 
 /**
+ * Contract for all implementation specific authentication clients
+ * that help developers directly work with strongly-typed objects
+ * to invoke several APIs on behalf of the authenticating user.
  * 
  * @author sangupta
  *
  */
 public interface AuthClient {
 	
+	/**
+	 * Obtain the login URL that the user needs to be redirected to for
+	 * gaining permissions.
+	 * 
+	 * @param successUrl
+	 * @return
+	 */
 	public String getLoginRedirectURL(String successUrl);
 	
+	/**
+	 * Verify that a user did grant us permissions so that we can invoke
+	 * further API calls on his/her behalf.
+	 * 
+	 * @param request
+	 * @param redirectURL
+	 * @return
+	 */
 	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL);
 
+	/**
+	 * Sign-out this current user from the backend, if APIs are available.
+	 * 
+	 * @return
+	 */
 	public boolean signOut();
 
 	/**
