@@ -68,7 +68,7 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	
 	/**
 	 * 
-	 * @param accessToke
+	 * @param accessToken
 	 * @param refreshToken
 	 * @param expiry
 	 */
@@ -95,7 +95,7 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 
 	@Override
 	public void signRequest(WebRequest request) {
-		//
+		this.authClient.signRequest(this.accessPair, request);
 	}
 
 }

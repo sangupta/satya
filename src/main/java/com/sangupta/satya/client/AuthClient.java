@@ -23,6 +23,7 @@ package com.sangupta.satya.client;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;
@@ -54,5 +55,13 @@ public interface AuthClient {
 	 * @return
 	 */
 	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz);
+
+	/**
+	 * Sign the given {@link WebRequest} with OAuth credentials.
+	 * 
+	 * @param accessPair
+	 * @param request
+	 */
+	public void signRequest(KeySecretPair accessPair, WebRequest request);
 	
 }

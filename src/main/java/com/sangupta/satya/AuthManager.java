@@ -142,7 +142,6 @@ public abstract class AuthManager {
 	 * @return
 	 */
 	private static AuthClient decipherAuthClientFromRequest(HttpServletRequest request) {
-		// TODO: let's make everything work for now
 		return AUTH_CLIENTS.get(AuthProvider.Facebook);
 	}
 	

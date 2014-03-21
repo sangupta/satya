@@ -77,4 +77,12 @@ public abstract class BaseAuthClient implements AuthClient {
 		System.out.println("Webresponse: " + content);
 		return GsonUtils.getGson().fromJson(content, clazz);
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void signRequest(KeySecretPair accessPair, WebRequest request) {
+		this.service.signRequest(request, accessPair);
+	}
 }
