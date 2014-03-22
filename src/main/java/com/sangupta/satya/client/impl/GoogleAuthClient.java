@@ -30,6 +30,7 @@ import com.sangupta.jerry.oauth.extractor.JSONExtractor;
 import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.jerry.util.AssertUtils;
+import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
@@ -83,8 +84,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = this.getUsingJson(accessPair, url, Map.class);
 		
-		UserProfile profile = new UserProfile();
-		profile.setUserID(map.get("id"));
+		UserProfile profile = new UserProfile(AuthProvider.Google, map.get("id"));
 		profile.setEmail(map.get("email"));
 		profile.setFullName(map.get("name"));
 		profile.setFirstName(map.get("given_name"));

@@ -23,6 +23,8 @@ package com.sangupta.satya.user;
 
 import java.security.Principal;
 
+import com.sangupta.satya.AuthProvider;
+
 /**
  * The value object that holds all details of the user.
  * 
@@ -31,7 +33,9 @@ import java.security.Principal;
  */
 public class UserProfile implements Principal {
 	
-	private String userID;
+	private final String userID;
+	
+	private final AuthProvider authProvider;
 
 	private String email;
 	
@@ -52,6 +56,17 @@ public class UserProfile implements Principal {
 	private String profileLink;
 	
 	private String profileImageURL;
+	
+	/**
+	 * Construct an immutable {@link UserProfile} for given auth provider.
+	 * 
+	 * @param userID
+	 * @param authProvider
+	 */
+	public UserProfile(AuthProvider authProvider, String userID) {
+		this.authProvider = authProvider;
+		this.userID = userID;
+	}
 	
 	@Override
 	public String getName() {
@@ -103,13 +118,6 @@ public class UserProfile implements Principal {
 	 */
 	public String getUserID() {
 		return userID;
-	}
-
-	/**
-	 * @param userID the userID to set
-	 */
-	public void setUserID(String userID) {
-		this.userID = userID;
 	}
 
 	/**
@@ -250,6 +258,13 @@ public class UserProfile implements Principal {
 	 */
 	public void setProfileLink(String profileLink) {
 		this.profileLink = profileLink;
+	}
+
+	/**
+	 * @return the authProvider
+	 */
+	public AuthProvider getAuthProvider() {
+		return authProvider;
 	}
 
 }

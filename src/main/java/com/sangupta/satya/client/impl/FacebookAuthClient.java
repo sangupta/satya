@@ -33,6 +33,7 @@ import com.sangupta.jerry.oauth.scope.FacebookScopes;
 import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.impl.FacebookOAuthServiceImpl;
 import com.sangupta.jerry.util.AssertUtils;
+import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
@@ -91,9 +92,8 @@ public class FacebookAuthClient extends BaseAuthClient {
 		
 		System.out.println(map);
 		
-		UserProfile profile = new UserProfile();
+		UserProfile profile = new UserProfile(AuthProvider.Facebook, map.get("id"));
 		
-		profile.setUserID(map.get("id"));
 		profile.setEmail(map.get("email"));
 		profile.setFullName(map.get("name"));
 		profile.setFirstName(map.get("first_name"));
