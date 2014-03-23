@@ -21,10 +21,14 @@
 
 package com.sangupta.satya;
 
+import com.sangupta.jerry.util.AssertUtils;
+
 /**
+ * Enumeration that represents various authentication providers
+ * available in the Satya framework.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public enum AuthProvider {
 	
@@ -55,5 +59,78 @@ public enum AuthProvider {
 	Twitter,
 	
 	Github;
+	
+	/**
+	 * Parse the string expression and convert it into an {@link AuthProvider}
+	 * instance.
+	 * 
+	 * @param provider
+	 *            the string based representation of the provider
+	 * 
+	 * @return the {@link AuthProvider} instance created after parsing
+	 */
+	public static AuthProvider fromString(String provider) {
+		if(AssertUtils.isBlank(provider)) {
+			return null;
+		}
+		
+		if("google".equalsIgnoreCase(provider)) {
+			return Google;
+		}
+		
+		if("yahoo".equalsIgnoreCase(provider)) {
+			return Yahoo;
+		}
+		
+		if("hotmail".equalsIgnoreCase(provider)) {
+			return Hotmail;
+		}
+		
+		if("facebook".equalsIgnoreCase(provider)) {
+			return Facebook;
+		}
+		
+		if("linkedin".equalsIgnoreCase(provider)) {
+			return LinkedIn;
+		}
+		
+		if("foursquare".equalsIgnoreCase(provider)) {
+			return FourSquare;
+		}
+		
+		if("dropbox".equalsIgnoreCase(provider)) {
+			return DropBox;
+		}
+		
+		if("windowslive".equalsIgnoreCase(provider)) {
+			return WindowsLive;
+		}
+		
+		if("myspace".equalsIgnoreCase(provider)) {
+			return MySpace;
+		}
+		
+		if("yammer".equalsIgnoreCase(provider)) {
+			return Yammer;
+		}
+		
+		if("salesforce".equalsIgnoreCase(provider)) {
+			return SalesForce;
+		}
+		
+		if("instagram".equalsIgnoreCase(provider)) {
+			return Instagram;
+		}
+		
+		if("twitter".equalsIgnoreCase(provider)) {
+			return Twitter;
+		}
+		
+		if("github".equalsIgnoreCase(provider)) {
+			return Github;
+		}
+		
+		throw new IllegalArgumentException("Unknown Authprovider: The value does not match any known provider");
+	}
 
 }

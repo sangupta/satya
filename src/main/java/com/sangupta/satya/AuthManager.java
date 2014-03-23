@@ -84,7 +84,7 @@ public abstract class AuthManager {
 	 * @return
 	 */
 	public static String getAuthRedirectURL(String provider, AuthPermissions permissions, String callbackURL) {
-		AuthProvider authProvider = AuthProvider.valueOf(provider);
+		AuthProvider authProvider = AuthProvider.fromString(provider);
 		return getAuthRedirectURL(authProvider, permissions, callbackURL);
 	}
 	
