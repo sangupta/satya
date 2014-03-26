@@ -98,4 +98,12 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 		this.authClient.signRequest(this.accessPair, request);
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public KeySecretPair getUserSpecificKeyPair() {
+		return this.accessPair;
+	}
+
 }
