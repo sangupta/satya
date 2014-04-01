@@ -139,6 +139,15 @@ public abstract class AuthManager {
 		
 		return client.verifyUser(request, redirectURL);
 	}
+	
+	public static AuthenticatedUser authenticateUser(AuthProvider authProvider, String token, String redirectURL) {
+		AuthClient client = AUTH_CLIENTS.get(authProvider);
+		if(client == null) {
+			throw new AssertionError("No authentication client configured for the given provider: " + authProvider);
+		}
+		
+		return client.verifyUser(token, redirectURL);
+	}
 
 	/**
 	 * Find from the request the {@link AuthClient} that should manage this callback.
@@ -147,7 +156,7 @@ public abstract class AuthManager {
 	 * @return
 	 */
 	private static AuthClient decipherAuthClientFromRequest(HttpServletRequest request) {
-		return AUTH_CLIENTS.get(AuthProvider.Facebook);
+		return AUTH_CLIENTS.get(AuthProvider.Twitter);
 	}
 	
 	public static AuthClient getAuthClient(AuthProvider provider) {

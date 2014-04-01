@@ -56,6 +56,14 @@ public interface AuthClient {
 	 * @return
 	 */
 	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL);
+	
+	/**
+	 * 
+	 * @param verifier
+	 * @param redirectURL
+	 * @return
+	 */
+	public AuthenticatedUser verifyUser(String verifier, String redirectURL);
 
 	/**
 	 * Sign-out this current user from the backend, if APIs are available.

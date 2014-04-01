@@ -65,14 +65,18 @@ public class FacebookAuthClient extends BaseAuthClient {
 		
 		// find the actual code
 		String code = request.getParameter("code");
-		
-		if(AssertUtils.isEmpty(code)) {
+		return this.verifyUser(code, redirectURL);
+	}
+	
+	@Override
+	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
+		if(AssertUtils.isEmpty(verifier)) {
 			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
 		}
 		
-		System.out.println("Using facebook verification code: " + code);
+		System.out.println("Using facebook verification code: " + verifier);
 		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(code, redirectURL);
+		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, redirectURL);
 		if(AssertUtils.isEmpty(response)) {
 			return null;
 		}

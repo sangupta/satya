@@ -47,7 +47,8 @@ public class GoogleAuthClient extends BaseAuthClient {
 		super(new GoogleOAuthServiceImpl(pair), "email profile");
 	}
 
-	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL) {
+	@Override
+	public AuthenticatedUser verifyUser(HttpServletRequest request, final String redirectURL) {
 		// extract the code from the request parameter
 		String errorCode = request.getParameter("error");
 		if(AssertUtils.isNotEmpty(errorCode)) {
@@ -58,13 +59,18 @@ public class GoogleAuthClient extends BaseAuthClient {
 		// find the actual code
 		String code = request.getParameter("code");
 		
-		if(AssertUtils.isEmpty(code)) {
+		return this.verifyUser(code, redirectURL);
+	}
+	
+	@Override
+	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
+		if(AssertUtils.isEmpty(verifier)) {
 			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
 		}
 		
-		System.out.println("Using google verification code: " + code);
+		System.out.println("Using google verification code: " + verifier);
 		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(code, redirectURL);
+		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, redirectURL);
 		if(AssertUtils.isEmpty(response)) {
 			return null;
 		}
