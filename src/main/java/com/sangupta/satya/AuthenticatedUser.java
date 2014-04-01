@@ -22,6 +22,7 @@
 package com.sangupta.satya;
 
 import com.sangupta.jerry.http.WebRequest;
+import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.user.UserProfile;
 
 /**
@@ -30,6 +31,15 @@ import com.sangupta.satya.user.UserProfile;
  *
  */
 public interface AuthenticatedUser {
+	
+	/**
+	 * Get the user specific key-secret pair obtained from the server
+	 * which can be persisted, and used afterwards to make calls to the
+	 * server on user's behalf.
+	 * 
+	 * @return
+	 */
+	public KeySecretPair getUserSpecificKeyPair();
 
 	/**
 	 * Get the user profile.
