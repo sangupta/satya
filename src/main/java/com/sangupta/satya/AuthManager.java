@@ -32,6 +32,7 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.impl.FacebookAuthClient;
 import com.sangupta.satya.client.impl.GoogleAuthClient;
+import com.sangupta.satya.client.impl.TwitterAuthClient;
 
 /**
  * 
@@ -67,6 +68,10 @@ public abstract class AuthManager {
 					
 				case Facebook:
 					AUTH_CLIENTS.put(provider, new FacebookAuthClient(pair));
+					continue;
+					
+				case Twitter:
+					AUTH_CLIENTS.put(provider, new TwitterAuthClient(pair));
 					continue;
 					
 				default:
