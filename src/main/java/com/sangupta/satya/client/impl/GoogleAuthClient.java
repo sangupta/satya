@@ -49,7 +49,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return new JSONExtractor();
+		return JSONExtractor.INSTANCE;
 	}
 
 	public boolean signOut() {

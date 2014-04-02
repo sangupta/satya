@@ -57,27 +57,8 @@ public class FacebookAuthClient extends BaseAuthClient {
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return new UrlParamExtractor();
+		return UrlParamExtractor.INSTANCE;
 	}
-
-//	@Override
-//	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
-//		if(AssertUtils.isEmpty(verifier)) {
-//			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
-//		}
-//		
-//		System.out.println("Using facebook verification code: " + verifier);
-//		// obtain the authorization code
-//		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, null, redirectURL);
-//		if(AssertUtils.isEmpty(response)) {
-//			return null;
-//		}
-//		
-//		System.out.println("facebook response: " + response);
-//		
-//		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
-//    	return new BaseAuthenticatedUser(map.get("access_token"), map.get("oauth_token_secret"), map.get("refresh_token"), map.get("expires"), this);
-//	}
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
