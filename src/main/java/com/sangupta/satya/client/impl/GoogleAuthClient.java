@@ -23,17 +23,12 @@ package com.sangupta.satya.client.impl;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONExtractor;
-import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
+import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
-import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.AuthProvider;
-import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.BaseAuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;
 
 /**
@@ -48,35 +43,13 @@ public class GoogleAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	public AuthenticatedUser verifyUser(HttpServletRequest request, final String redirectURL) {
-		// extract the code from the request parameter
-		String errorCode = request.getParameter("error");
-		if(AssertUtils.isNotEmpty(errorCode)) {
-			// TODO: make checked exceptions so that user's know what's happening
-			return null;
-		}
-		
-		// find the actual code
-		String code = request.getParameter("code");
-		
-		return this.verifyUser(code, redirectURL);
+	protected String getProviderName() {
+		return "Google";
 	}
-	
+
 	@Override
-	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
-		if(AssertUtils.isEmpty(verifier)) {
-			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
-		}
-		
-		System.out.println("Using google verification code: " + verifier);
-		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, redirectURL);
-		if(AssertUtils.isEmpty(response)) {
-			return null;
-		}
-		
-		Map<String, String> map = new JSONExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("access_token"), "", map.get("refresh_token"), 3600, this);
+	protected TokenExtractor getTokenExtractor() {
+		return new JSONExtractor();
 	}
 
 	public boolean signOut() {

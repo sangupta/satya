@@ -37,12 +37,12 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	/**
 	 * The access token obtained from the server
 	 */
-	private KeySecretPair accessPair;
+	private KeySecretPair userAccessPair;
 	
 	/**
 	 * The refresh token obtained from the server
 	 */
-	private String refreshToken;
+	private String userRefreshToken;
 	
 	/**
 	 * The time in millis when the token expires
@@ -73,8 +73,8 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	 * @param expiry
 	 */
 	public BaseAuthenticatedUser(String accessToken, String accessSecret, String refreshToken, long expiresIn, AuthClient authClient) {
-		this.accessPair = new KeySecretPair(accessToken, accessSecret);
-		this.refreshToken = refreshToken;
+		this.userAccessPair = new KeySecretPair(accessToken, accessSecret);
+		this.userRefreshToken = refreshToken;
 		this.expiry = System.currentTimeMillis() + expiresIn;
 		
 		this.authClient = authClient;
@@ -82,28 +82,44 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	
 	@Override
 	public UserProfile getUserProfile() {
-		return this.authClient.getUserProfile(this.accessPair);
+		return this.authClient.getUserProfile(this.userAccessPair);
 	}
 	
 	@Override
 	public void signOut() {
-		this.accessPair = null;
-		this.refreshToken = null;
+		this.userAccessPair = null;
+		this.userRefreshToken = null;
 		this.expiry = 0;
 		this.authClient.signOut();
 	}
 
 	@Override
 	public void signRequest(WebRequest request) {
-		this.authClient.signRequest(this.accessPair, request);
+		this.authClient.signRequest(this.userAccessPair, request);
+	}
+	
+	/**
+	 * @return the userAccessPair
+	 */
+	@Override
+	public KeySecretPair getUserAccessPair() {
+		return userAccessPair;
+	}
+
+	// Usual accessors follow
+
+	/**
+	 * @return the userRefreshToken
+	 */
+	public String getUserRefreshToken() {
+		return userRefreshToken;
 	}
 
 	/**
-	 * 
+	 * @return the expiry
 	 */
-	@Override
-	public KeySecretPair getUserSpecificKeyPair() {
-		return this.accessPair;
+	public long getExpiry() {
+		return expiry;
 	}
 
 }

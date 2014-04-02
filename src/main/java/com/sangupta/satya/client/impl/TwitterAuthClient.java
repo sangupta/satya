@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
 import com.sangupta.jerry.oauth.service.OAuth1ServiceImpl;
 import com.sangupta.jerry.oauth.service.impl.TwitterOAuthServiceImpl;
@@ -16,6 +17,16 @@ import com.sangupta.satya.user.UserProfile;
 
 public class TwitterAuthClient extends BaseAuthClient {
 	
+	@Override
+	protected String getProviderName() {
+		return "Twitter";
+	}
+
+	@Override
+	protected TokenExtractor getTokenExtractor() {
+		return new UrlParamExtractor();
+	}
+
 	public TwitterAuthClient(KeySecretPair pair) {
 		super(new TwitterOAuthServiceImpl(pair), "");
 	}
@@ -37,29 +48,9 @@ public class TwitterAuthClient extends BaseAuthClient {
 		}
 		
 		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("oauth_token"), "", map.get("oauth_token_secret"), 3600, this);
+    	return new BaseAuthenticatedUser(map.get("oauth_token"), map.get("oauth_token_secret"), "", 3600, this);
 	}
 	
-	@Override
-	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
-		int index = redirectURL.indexOf("?oauth_token=");
-		final String token = redirectURL.substring(index + "?oauth_token=".length());
-		
-		if(AssertUtils.isEmpty(token) || AssertUtils.isEmpty(verifier)) {
-			throw new IllegalArgumentException("The request does not appear to be a valid Twitter request");
-		}
-		
-		// obtain the authorization code
-		String response = ((OAuth1ServiceImpl) this.service).getAuthorizationResponse(token, verifier, redirectURL);
-		if(AssertUtils.isEmpty(response)) {
-			return null;
-		}
-		
-		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("oauth_token"), "", map.get("oauth_token_secret"), 3600, this);
-		
-	}
-
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
 		return null;

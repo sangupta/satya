@@ -39,7 +39,7 @@ public interface AuthenticatedUser {
 	 * 
 	 * @return
 	 */
-	public KeySecretPair getUserSpecificKeyPair();
+	public KeySecretPair getUserAccessPair();
 
 	/**
 	 * Get the user profile.

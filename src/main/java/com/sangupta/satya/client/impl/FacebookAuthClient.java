@@ -25,18 +25,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
 import com.sangupta.jerry.oauth.scope.FacebookScopes;
-import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.impl.FacebookOAuthServiceImpl;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.AuthProvider;
-import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.BaseAuthenticatedUser;
 import com.sangupta.satya.user.UserProfile;
 
 /**
@@ -55,37 +51,33 @@ public class FacebookAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL) {
-		// extract the code from the request parameter
-		String errorCode = request.getParameter("error");
-		if(AssertUtils.isNotEmpty(errorCode)) {
-			// TODO: make checked exceptions so that user's know what's happening
-			return null;
-		}
-		
-		// find the actual code
-		String code = request.getParameter("code");
-		return this.verifyUser(code, redirectURL);
+	protected String getProviderName() {
+		return "Facebook";
 	}
-	
+
 	@Override
-	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
-		if(AssertUtils.isEmpty(verifier)) {
-			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
-		}
-		
-		System.out.println("Using facebook verification code: " + verifier);
-		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, redirectURL);
-		if(AssertUtils.isEmpty(response)) {
-			return null;
-		}
-		
-		System.out.println("facebook response: " + response);
-		
-		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("access_token"), "", map.get("refresh_token"), map.get("expires"), this);
+	protected TokenExtractor getTokenExtractor() {
+		return new UrlParamExtractor();
 	}
+
+//	@Override
+//	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
+//		if(AssertUtils.isEmpty(verifier)) {
+//			throw new IllegalArgumentException("The request does not appear to be a valid Google request");
+//		}
+//		
+//		System.out.println("Using facebook verification code: " + verifier);
+//		// obtain the authorization code
+//		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, null, redirectURL);
+//		if(AssertUtils.isEmpty(response)) {
+//			return null;
+//		}
+//		
+//		System.out.println("facebook response: " + response);
+//		
+//		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
+//    	return new BaseAuthenticatedUser(map.get("access_token"), map.get("oauth_token_secret"), map.get("refresh_token"), map.get("expires"), this);
+//	}
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
