@@ -26,10 +26,13 @@ import java.security.Principal;
 import com.sangupta.satya.AuthProvider;
 
 /**
- * The value object that holds all details of the user.
+ * The value object that holds all details of the user. This also implements the
+ * {@link Principal} interface so that the obtained user can directly be added
+ * to the <code>SecurityContext</code> implementations of Java security
+ * frameworks.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class UserProfile implements Principal {
 	

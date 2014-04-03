@@ -35,18 +35,40 @@ import com.sangupta.satya.client.impl.GoogleAuthClient;
 import com.sangupta.satya.client.impl.TwitterAuthClient;
 
 /**
+ * The centralized authentication manager in the Satya authentication framework.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
-public abstract class AuthManager {
+public final class AuthManager {
 	
+	/**
+	 * A list of all initialized authentication clients
+	 */
 	private static final Map<AuthProvider, AuthClient> AUTH_CLIENTS = new HashMap<AuthProvider, AuthClient>();
+	
+	/**
+	 * Prevent from instances being constructed in standard programming
+	 * constructs
+	 */
+	private AuthManager() {
+		
+	}
 
 	/**
-	 * Load all providers based on the auth config that we have
+	 * Load all providers based on the given {@link AuthConfig} instance
 	 * 
 	 * @param authConfig
+	 *            the authentication configuration instance to use for
+	 *            initialization
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if {@link AuthConfig} instance is <code>null</code>
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if there are no {@link AuthProvider}s added to the
+	 *             {@link AuthConfig} instance
+	 * 
 	 */
 	public static void loadConfig(AuthConfig authConfig) {
 		if(authConfig == null) {
@@ -82,11 +104,29 @@ public abstract class AuthManager {
 	}
 	
 	/**
+	 * Get redirect URL for the given authentication provider, given the
+	 * callback and the permissions we need to call with. It is recommended to
+	 * use the
+	 * {@link AuthManager#authenticateUser(AuthProvider, String, String)} method
+	 * for better type safety.
 	 * 
 	 * @param provider
+	 *            a case-insensitive representation of the authentication
+	 *            provider.
+	 * 
 	 * @param permissions
+	 *            the {@link AuthPermissions} which are needed
+	 * 
 	 * @param callbackURL
-	 * @return
+	 *            the callback URL at which the OAuth server will call us back
+	 * 
+	 * @return the login URL to which a user may be redirected, or asked to open
+	 *         in a browser to complete the authentication workflow
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the {@link AuthProvider} or {@link AuthPermissions} is
+	 *             <code>null</code>, or if the callback URL is
+	 *             <code>null/empty</code>
 	 */
 	public static String getAuthRedirectURL(String provider, AuthPermissions permissions, String callbackURL) {
 		AuthProvider authProvider = AuthProvider.fromString(provider);
@@ -94,13 +134,26 @@ public abstract class AuthManager {
 	}
 	
 	/**
-	 * Get redirect URL for the given authentication provider, given the callback and the permissions
-	 * we need to call with.
+	 * Get redirect URL for the given authentication provider, given the
+	 * callback and the permissions we need to call with.
 	 * 
 	 * @param provider
+	 *            the {@link AuthProvider} for which authentication URL is being
+	 *            seeked
+	 * 
 	 * @param permissions
+	 *            the {@link AuthPermissions} which are needed
+	 * 
 	 * @param callbackURL
-	 * @return
+	 *            the callback URL at which the OAuth server will call us back
+	 * 
+	 * @return the login URL to which a user may be redirected, or asked to open
+	 *         in a browser to complete the authentication workflow
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the {@link AuthProvider} or {@link AuthPermissions} is
+	 *             <code>null</code>, or if the callback URL is
+	 *             <code>null/empty</code>
 	 */
 	public static String getAuthRedirectURL(AuthProvider provider, AuthPermissions permissions, String callbackURL) {
 		if(provider == null) {
@@ -128,7 +181,18 @@ public abstract class AuthManager {
 	 * Authenticate the user from an incoming request.
 	 * 
 	 * @param request
-	 * @return
+	 *            the {@link HttpServletRequest} that was received after
+	 *            authentication from the OAuth server
+	 * 
+	 * @param redirectURL
+	 *            the redirect URL used for authentication
+	 * 
+	 * @return an instance of {@link AuthenticatedUser} that can then make calls
+	 *         to the OAuth server on behalf of the user
+	 * 
+	 * @throws AssertionError
+	 *             if we are unable to detect the {@link AuthClient} from the
+	 *             provided {@link HttpServletRequest}
 	 */
 	public static AuthenticatedUser authenticateUser(HttpServletRequest request, String redirectURL) {
 		// decipher the authprovider based on the request
@@ -140,6 +204,25 @@ public abstract class AuthManager {
 		return client.verifyUser(request, redirectURL);
 	}
 	
+	/**
+	 * Authenticate the user for the given {@link AuthProvider}, the auth token
+	 * and the redirect URL that was supplied for authentication.
+	 * 
+	 * @param authProvider
+	 *            the {@link AuthProvider} for which we are verifying the user
+	 * 
+	 * @param token
+	 *            the authentication token as fetched from the OAuth server
+	 * 
+	 * @param redirectURL
+	 *            the redirect URL used for authentication
+	 * 
+	 * @return an instance of {@link AuthenticatedUser} that can then make calls
+	 *         to the OAuth server on behalf of the user
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the given {@link AuthProvider} is <code>null</code>
+	 */
 	public static AuthenticatedUser authenticateUser(AuthProvider authProvider, String token, String redirectURL) {
 		AuthClient client = AUTH_CLIENTS.get(authProvider);
 		if(client == null) {
@@ -159,15 +242,36 @@ public abstract class AuthManager {
 		return AUTH_CLIENTS.get(AuthProvider.Twitter);
 	}
 	
+	/**
+	 * Return the {@link AuthClient} for the given {@link AuthProvider}.
+	 * 
+	 * @param provider
+	 *            the {@link AuthProvider} that we are need {@link AuthClient}
+	 *            for
+	 * 
+	 * @return the associated auth client
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the given {@link AuthProvider} is <code>null</code>
+	 */
 	public static AuthClient getAuthClient(AuthProvider provider) {
+		if(provider == null) {
+			throw new IllegalArgumentException("AuthProvider cannot be null");
+		}
+		
 		return AUTH_CLIENTS.get(provider);
 	}
 
 	/**
-	 * Shutdown the authentication manager
+	 * Shutdown the authentication manager. This basically clears all added
+	 * {@link AuthClient}s from the cache and makes the slate clean for all
+	 * {@link AuthManager}. However, any {@link AuthenticatedUser} that is being
+	 * used elsewhere, will continue to function and use the previously
+	 * configured {@link AuthClient} instance.
 	 * 
 	 */
 	public static void shutDown() {
 		AuthManager.AUTH_CLIENTS.clear();
 	}
+	
 }

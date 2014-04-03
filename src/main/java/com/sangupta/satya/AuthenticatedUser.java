@@ -26,9 +26,12 @@ import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.user.UserProfile;
 
 /**
+ * Contract for a user who is authenticated in one of the social
+ * networks and provides convenience methods to access various functionality
+ * around user actions.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public interface AuthenticatedUser {
 	

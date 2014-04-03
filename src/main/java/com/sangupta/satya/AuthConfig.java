@@ -21,16 +21,22 @@
 
 package com.sangupta.satya;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.util.AssertUtils;
 
 /**
+ * Holds central configuration for the Satya authentication system. This is
+ * an instance class, so that multiple {@link AuthManager}s can use different
+ * configuration depending on the application being developed.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class AuthConfig {
 
@@ -39,19 +45,29 @@ public class AuthConfig {
 	/**
 	 * Add a new key-secret pair for the given provider.
 	 * 
-	 * @param provider
+	 * @param authProvider
+	 *            the authentication provider against which keys need to be
+	 *            added
+	 * 
 	 * @param pair
+	 *            the key-secret pair that needs to be added
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the authProvider is null
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the keySecretPair is null
 	 */
-	public void addConfig(AuthProvider provider, KeySecretPair pair) {
-		if(provider == null) {
+	public void addConfig(AuthProvider authProvider, KeySecretPair keySecretPair) {
+		if(authProvider == null) {
 			throw new IllegalArgumentException("AuthProvider cannot be null");
 		}
 		
-		if(pair == null) {
+		if(keySecretPair == null) {
 			throw new IllegalArgumentException("KeySecretPair cannot be null");
 		}
 		
-		this.config.put(provider, pair);
+		this.config.put(authProvider, keySecretPair);
 	}
 
 	/**
@@ -78,13 +94,27 @@ public class AuthConfig {
 	}
 	
 	/**
-	 * Load the {@link AuthConfig} instance configuration using the givne file.
+	 * Load the {@link AuthConfig} instance configuration using the given file.
 	 * 
 	 * @param filePath
+	 *            the absolute file path from where to load the file
+	 * 
 	 */
 	public void load(String filePath) {
-		// TODO: change this to load details from file
-		this.config.put(AuthProvider.Google, new KeySecretPair("opensource.brickred.com", "YC06FqhmCLWvtBg/O4W/aJfj"));
+		if(AssertUtils.isEmpty(filePath)) {
+			throw new IllegalArgumentException("File path cannot be empty/null");
+		}
+		
+		File file = new File(filePath);
+		if(!file.exists()) {
+			throw new IllegalArgumentException("File path cannot be empty/null");
+		}
+		
+		if(!file.isFile()) {
+			throw new IllegalArgumentException("File does not represent a valid file");
+		}
+		
+		throw new NotImplementedException();
 	}
 	
 }

@@ -19,6 +19,12 @@
 		</license>
 	</licenses>
 	
+	<scm>
+		<connection>scm:git:git://github.com/sangupta/satya.git</connection>
+		<developerConnection>scm:git:http://git@github.com/sangupta/satya.git</developerConnection>
+		<url>https://github.com/sangupta/satya</url>
+	</scm>
+	
 	<developers>
 		<developer>
 			<id>sangupta</id>
@@ -62,12 +68,12 @@
 		<dependency>
 			<groupId>com.sangupta</groupId>
 			<artifactId>jerry-core</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sangupta</groupId>
 			<artifactId>jerry-oauth</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

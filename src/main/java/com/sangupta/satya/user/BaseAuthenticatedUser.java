@@ -28,9 +28,11 @@ import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.client.AuthClient;
 
 /**
- * 
+ * Base implementation of the {@link AuthenticatedUser} that provides
+ * much common functionality around all social networks.
+ *  
  * @author sangupta
- *
+ * @since 1.0
  */
 public class BaseAuthenticatedUser implements AuthenticatedUser {
 

@@ -28,13 +28,15 @@ import com.sangupta.jerry.oauth.extractor.JSONExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.UserProfile;
 
 /**
+ * {@link AuthClient} for http://google.com
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class GoogleAuthClient extends BaseAuthClient {
 	

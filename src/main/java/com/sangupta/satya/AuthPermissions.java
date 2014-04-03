@@ -22,9 +22,11 @@
 package com.sangupta.satya;
 
 /**
+ * Various permissions that a user may seek while authenticating with
+ * the social network.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class AuthPermissions {
 	
