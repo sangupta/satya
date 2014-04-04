@@ -32,7 +32,9 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.impl.FacebookAuthClient;
 import com.sangupta.satya.client.impl.GoogleAuthClient;
+import com.sangupta.satya.client.impl.MicrosoftLiveAuthClient;
 import com.sangupta.satya.client.impl.TwitterAuthClient;
+import com.sangupta.satya.client.impl.YahooAuthClient;
 
 /**
  * The centralized authentication manager in the Satya authentication framework.
@@ -94,6 +96,14 @@ public final class AuthManager {
 					
 				case Twitter:
 					AUTH_CLIENTS.put(provider, new TwitterAuthClient(pair));
+					continue;
+					
+				case Yahoo:
+					AUTH_CLIENTS.put(provider, new YahooAuthClient(pair));
+					continue;
+					
+				case MicrosoftLive:
+					AUTH_CLIENTS.put(provider, new MicrosoftLiveAuthClient(pair));
 					continue;
 					
 				default:
@@ -239,7 +249,13 @@ public final class AuthManager {
 	 * @return
 	 */
 	private static AuthClient decipherAuthClientFromRequest(HttpServletRequest request) {
-		return AUTH_CLIENTS.get(AuthProvider.Twitter);
+		// TODO: fix this using the user-agent or otherwise
+		if(AUTH_CLIENTS.size() == 1) {
+			return AUTH_CLIENTS.get(AUTH_CLIENTS.keySet().iterator().next());
+					
+		}
+		
+		return AUTH_CLIENTS.get(AuthProvider.Yahoo);
 	}
 	
 	/**

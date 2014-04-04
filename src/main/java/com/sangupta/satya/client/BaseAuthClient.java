@@ -115,8 +115,8 @@ public abstract class BaseAuthClient implements AuthClient {
 	}
 	
 	protected AuthenticatedUser verifyUserOAuth1(String verifier, String redirectURL) {
-		int index = redirectURL.indexOf("?oauth_token=");
-		final String token = redirectURL.substring(index + "?oauth_token=".length());
+		int index = redirectURL.indexOf("?");
+		final String token = UrlParamExtractor.INSTANCE.extractTokens(redirectURL.substring(index + 1)).get("oauth_token");
 		
 		if(AssertUtils.isEmpty(token) || AssertUtils.isEmpty(verifier)) {
 			throw new IllegalArgumentException("The request does not appear to be a valid " + getProviderName() + " request");

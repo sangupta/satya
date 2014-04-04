@@ -46,7 +46,7 @@ public enum AuthProvider {
 	
 	DropBox,
 	
-	WindowsLive,
+	MicrosoftLive,
 	
 	MySpace,
 	
@@ -103,7 +103,7 @@ public enum AuthProvider {
 		}
 		
 		if("windowslive".equalsIgnoreCase(provider)) {
-			return WindowsLive;
+			return MicrosoftLive;
 		}
 		
 		if("myspace".equalsIgnoreCase(provider)) {
