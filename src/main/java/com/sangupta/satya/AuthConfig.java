@@ -3,7 +3,7 @@
  * satya - social authentication framework
  * Copyright (c) 2014, Sandeep Gupta
  * 
- * http://www.sangupta/projects/satya
+ * http://sangupta.com/projects/satya
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
