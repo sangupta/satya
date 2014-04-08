@@ -114,6 +114,19 @@ public class UserProfile implements Principal {
 		return this.userID.hashCode();
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(1024);
+		
+		builder.append("[UserProfile: ");
+		builder.append(this.authProvider.toString());
+		builder.append("; ");
+		builder.append(this.email);
+		builder.append("]");
+		
+		return builder.toString();
+	}
+	
 	// Usual accessors follow
 
 	/**
