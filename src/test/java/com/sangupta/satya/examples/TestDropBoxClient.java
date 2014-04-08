@@ -30,28 +30,28 @@ import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.MockHttpServletRequest;
-import com.sangupta.satya.client.impl.LinkedInAuthClient;
+import com.sangupta.satya.client.impl.DropBoxAuthClient;
 import com.sangupta.satya.user.UserProfile;
 
 /**
- * Example to test {@link LinkedInAuthClient}
+ * Example to test {@link DropBoxAuthClient}
  * 
  * @author sangupta
  *
  */
-public class TestLinkedInClient {
+public class TestDropBoxClient {
 
 	public static void main(String[] args) {
-		String redirectURL = "http://opensource.brickred.com/social/auth";
+		String redirectURL = "http://localhost/satya/oauth/drpobox";
 		
 		AuthConfig config = new AuthConfig();
 		
-		KeySecretPair google = new KeySecretPair(ApiKeys.LinkedIn, ApiKeys.LinkedInSecret);
-		config.addConfig(AuthProvider.LinkedIn, google);
+		KeySecretPair dropBox = new KeySecretPair(ApiKeys.DropBox, ApiKeys.DropBoxSecret);
+		config.addConfig(AuthProvider.DropBox, dropBox);
 		
 		AuthManager.loadConfig(config);
 		
-		String url = AuthManager.getAuthRedirectURL(AuthProvider.LinkedIn, AuthPermissions.DEFAULT, redirectURL);
+		String url = AuthManager.getAuthRedirectURL(AuthProvider.DropBox, AuthPermissions.DEFAULT, redirectURL);
 		System.out.println(url);
 		
 		String code = ConsoleUtils.readLine("code: ", true);

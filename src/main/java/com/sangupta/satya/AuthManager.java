@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
+import com.sangupta.satya.client.impl.DropBoxAuthClient;
 import com.sangupta.satya.client.impl.FacebookAuthClient;
 import com.sangupta.satya.client.impl.GithubAuthClient;
 import com.sangupta.satya.client.impl.GoogleAuthClient;
@@ -114,6 +115,10 @@ public final class AuthManager {
 					
 				case Github:
 					AUTH_CLIENTS.put(provider, new GithubAuthClient(pair));
+					continue;
+					
+				case DropBox:
+					AUTH_CLIENTS.put(provider, new DropBoxAuthClient(pair));
 					continue;
 					
 				default:

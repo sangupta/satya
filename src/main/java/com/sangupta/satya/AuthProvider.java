@@ -36,25 +36,13 @@ public enum AuthProvider {
 	
 	Yahoo,
 	
-	Hotmail,
-	
 	Facebook,
 	
 	LinkedIn,
 	
-	FourSquare,
-	
 	DropBox,
 	
 	MicrosoftLive,
-	
-	MySpace,
-	
-	Yammer,
-	
-	SalesForce,
-	
-	Instagram,
 	
 	Twitter,
 	
@@ -82,10 +70,6 @@ public enum AuthProvider {
 			return Yahoo;
 		}
 		
-		if("hotmail".equalsIgnoreCase(provider)) {
-			return Hotmail;
-		}
-		
 		if("facebook".equalsIgnoreCase(provider)) {
 			return Facebook;
 		}
@@ -94,32 +78,12 @@ public enum AuthProvider {
 			return LinkedIn;
 		}
 		
-		if("foursquare".equalsIgnoreCase(provider)) {
-			return FourSquare;
-		}
-		
 		if("dropbox".equalsIgnoreCase(provider)) {
 			return DropBox;
 		}
 		
 		if("windowslive".equalsIgnoreCase(provider)) {
 			return MicrosoftLive;
-		}
-		
-		if("myspace".equalsIgnoreCase(provider)) {
-			return MySpace;
-		}
-		
-		if("yammer".equalsIgnoreCase(provider)) {
-			return Yammer;
-		}
-		
-		if("salesforce".equalsIgnoreCase(provider)) {
-			return SalesForce;
-		}
-		
-		if("instagram".equalsIgnoreCase(provider)) {
-			return Instagram;
 		}
 		
 		if("twitter".equalsIgnoreCase(provider)) {

@@ -13,8 +13,15 @@ import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.satya.client.impl.FacebookAuthClient;
 import com.sangupta.satya.user.UserProfile;
 
+/**
+ * Example to test {@link FacebookAuthClient}
+ * 
+ * @author sangupta
+ *
+ */
 public class TestFacebookClient {
 	
 	public static void main(String[] args) {
