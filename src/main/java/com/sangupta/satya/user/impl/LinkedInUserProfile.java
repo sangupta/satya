@@ -32,6 +32,22 @@ import com.sangupta.satya.user.BaseUserProfile;
  * @since 1.0
  */
 public class LinkedInUserProfile extends BaseUserProfile {
+	
+	private String id;
+	
+	private String firstName;
+	
+	private String headline;
+	
+	private String lastName;
+	
+	private String pictureUrl;
+	
+	private String publicProfileUrl;
+	
+	private String summary;
+	
+	private LinkedInSiteStandardProfile siteStandardProfileRequest;
 
 	public LinkedInUserProfile() {
 		super(AuthProvider.LinkedIn);
@@ -45,20 +61,140 @@ public class LinkedInUserProfile extends BaseUserProfile {
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.firstName + " " + this.lastName;
 	}
 
 	@Override
 	public String getProfileLink() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.publicProfileUrl;
 	}
 
 	@Override
 	public String getProfileImageURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pictureUrl;
+	}
+	
+	// Usual accessors follow
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @return the headline
+	 */
+	public String getHeadline() {
+		return headline;
+	}
+
+	/**
+	 * @param headline the headline to set
+	 */
+	public void setHeadline(String headline) {
+		this.headline = headline;
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	// STATIC CLASS
+	
+	public static class LinkedInSiteStandardProfile {
+		
+		public String url;
+		
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the pictureUrl
+	 */
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	/**
+	 * @param pictureUrl the pictureUrl to set
+	 */
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	/**
+	 * @return the publicProfileUrl
+	 */
+	public String getPublicProfileUrl() {
+		return publicProfileUrl;
+	}
+
+	/**
+	 * @param publicProfileUrl the publicProfileUrl to set
+	 */
+	public void setPublicProfileUrl(String publicProfileUrl) {
+		this.publicProfileUrl = publicProfileUrl;
+	}
+
+	/**
+	 * @return the summary
+	 */
+	public String getSummary() {
+		return summary;
+	}
+
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	/**
+	 * @return the siteStandardProfileRequest
+	 */
+	public LinkedInSiteStandardProfile getSiteStandardProfileRequest() {
+		return siteStandardProfileRequest;
+	}
+
+	/**
+	 * @param siteStandardProfileRequest the siteStandardProfileRequest to set
+	 */
+	public void setSiteStandardProfileRequest(
+			LinkedInSiteStandardProfile siteStandardProfileRequest) {
+		this.siteStandardProfileRequest = siteStandardProfileRequest;
 	}
 
 }

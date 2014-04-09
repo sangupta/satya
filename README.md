@@ -11,7 +11,7 @@ Integrated Social Networks
 * Google
 * Yahoo *broken*
 * Facebook
-* LinkedIn *broken*
+* LinkedIn
 * DropBox
 * Microsoft Live
 * Twitter

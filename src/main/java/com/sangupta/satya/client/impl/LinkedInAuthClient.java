@@ -30,6 +30,7 @@ import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.impl.LinkedInUserProfile;
 
 /**
  * {@link AuthClient} for http://linkedin.com
@@ -40,7 +41,7 @@ import com.sangupta.satya.client.BaseAuthClient;
 public class LinkedInAuthClient extends BaseAuthClient {
 	
 	public LinkedInAuthClient(KeySecretPair pair) {
-		super(new LinkedInOAuthServiceImpl(pair), LinkedInScopes.BASIC_PROFILE);
+		super(new LinkedInOAuthServiceImpl(pair), LinkedInScopes.FULL_PROFILE);
 	}
 
 	@Override
@@ -55,7 +56,8 @@ public class LinkedInAuthClient extends BaseAuthClient {
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		return null;
+		String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,site-standard-profile-request,summary,picture-url,public-profile-url,email-address)?format=json";
+		return this.getUsingJson(accessPair, url, LinkedInUserProfile.class);
 	}
 
 }
