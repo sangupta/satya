@@ -30,14 +30,14 @@ import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.impl.MicrosoftLiveAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Example to test {@link MicrosoftLiveAuthClient}
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class TestMicrosoftLiveClient {
 	
@@ -48,8 +48,8 @@ public class TestMicrosoftLiveClient {
 		AuthConfig config = new AuthConfig();
 		
 		// load values
-		KeySecretPair yahoo = new KeySecretPair(ApiKeys.MicrosoftLive, ApiKeys.MicrosoftLiveSecret);
-		config.addConfig(AuthProvider.MicrosoftLive, yahoo);
+		KeySecretPair microsoftLive = new KeySecretPair(ApiKeys.MicrosoftLive, ApiKeys.MicrosoftLiveSecret);
+		config.addConfig(AuthProvider.MicrosoftLive, microsoftLive);
 		
 		// initialize AuthManager
 		AuthManager.loadConfig(config);

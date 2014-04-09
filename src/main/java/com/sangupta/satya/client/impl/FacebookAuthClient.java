@@ -21,20 +21,16 @@
 
 package com.sangupta.satya.client.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
+import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.scope.FacebookScopes;
 import com.sangupta.jerry.oauth.service.impl.FacebookOAuthServiceImpl;
-import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.UserProfile;
+import com.sangupta.satya.user.impl.FacebookUserProfile;
 
 /**
  * {@link AuthClient} for http://facebook.com
@@ -53,49 +49,19 @@ public class FacebookAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	protected String getProviderName() {
-		return "Facebook";
+	protected AuthProvider getAuthProvider() {
+		return AuthProvider.Facebook;
 	}
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return UrlParamExtractor.INSTANCE;
+		return UrlParamTokenExtractor.INSTANCE;
 	}
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
 		String url = "https://graph.facebook.com/me";
-		
-		@SuppressWarnings("unchecked")
-		Map<String, String> map = this.getUsingJson(accessPair, url, Map.class);
-		
-		System.out.println(map);
-		
-		UserProfile profile = new UserProfile(AuthProvider.Facebook, map.get("id"));
-		
-		profile.setEmail(map.get("email"));
-		profile.setFullName(map.get("name"));
-		profile.setFirstName(map.get("first_name"));
-		profile.setLastName(map.get("last_name"));
-		
-		try {
-			String birthDay = map.get("birthday");
-			if(AssertUtils.isNotBlank(birthDay)) {
-				SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-				Date bday = format.parse(birthDay);
-				if(bday != null) {
-					profile.setDateOfBirth(bday.getTime());
-				}
-			}
-		} catch(Exception e) {
-			
-		}
-		
-		profile.setProfileLink(map.get("link"));
-		profile.setProfileImageURL(map.get("picture"));
-		profile.setGender(map.get("gender"));
-		
-		return profile;
+		return this.getUsingJson(accessPair, url, FacebookUserProfile.class);
 	}
 
 }

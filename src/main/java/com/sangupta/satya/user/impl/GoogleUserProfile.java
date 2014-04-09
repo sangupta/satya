@@ -19,42 +19,44 @@
  * 
  */
 
-package com.sangupta.satya.client.impl;
+package com.sangupta.satya.user.impl;
 
-import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
-import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
-import com.sangupta.jerry.oauth.service.impl.MicrosoftLiveOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.UserProfile;
-import com.sangupta.satya.client.AuthClient;
-import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.BaseUserProfile;
 
 /**
- * {@link AuthClient} for http://live.com
+ * {@link UserProfile} implementation for Google.com
  * 
  * @author sangupta
  * @since 1.0
  */
-public class MicrosoftLiveAuthClient extends BaseAuthClient {
+public class GoogleUserProfile extends BaseUserProfile {
+
+	public GoogleUserProfile() {
+		super(AuthProvider.Google);
+	}
 	
-	public MicrosoftLiveAuthClient(KeySecretPair pair) {
-		super(new MicrosoftLiveOAuthServiceImpl(pair), MicrosoftLiveScopes.READ_USER_PROFILE);
+	@Override
+	public String getUserID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	protected AuthProvider getAuthProvider() {
-		return AuthProvider.MicrosoftLive;
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	protected TokenExtractor getTokenExtractor() {
-		return UrlParamTokenExtractor.INSTANCE;
+	public String getProfileLink() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
+	public String getProfileImageURL() {
 		// TODO Auto-generated method stub
 		return null;
 	}

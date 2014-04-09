@@ -23,7 +23,6 @@ package com.sangupta.satya;
 
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Contract for a user who is authenticated in one of the social

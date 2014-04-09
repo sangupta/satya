@@ -25,18 +25,20 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.http.WebInvoker;
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.http.WebRequestMethod;
 import com.sangupta.jerry.http.WebResponse;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
+import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.service.OAuth1ServiceImpl;
 import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.OAuthService;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
+import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
 
@@ -78,8 +80,17 @@ public abstract class BaseAuthClient implements AuthClient {
 		return service.getLoginURL(successUrl, scope);
 	}
 	
-	protected abstract String getProviderName();
+	/**
+	 * Indicate the {@link AuthProvider} that we handle.
+	 * 
+	 * @return
+	 */
+	protected abstract AuthProvider getAuthProvider();
 	
+	/**
+	 * Verify the incoming user.
+	 * 
+	 */
 	@Override
 	public AuthenticatedUser verifyUser(HttpServletRequest request, final String redirectURL) {
 		// extract the code from the request parameter
@@ -116,10 +127,10 @@ public abstract class BaseAuthClient implements AuthClient {
 	
 	protected AuthenticatedUser verifyUserOAuth1(String verifier, String redirectURL) {
 		int index = redirectURL.indexOf("?");
-		final String token = UrlParamExtractor.INSTANCE.extractTokens(redirectURL.substring(index + 1)).get("oauth_token");
+		final String token = UrlParamTokenExtractor.INSTANCE.extractTokens(redirectURL.substring(index + 1)).get("oauth_token");
 		
 		if(AssertUtils.isEmpty(token) || AssertUtils.isEmpty(verifier)) {
-			throw new IllegalArgumentException("The request does not appear to be a valid " + getProviderName() + " request");
+			throw new IllegalArgumentException("The request does not appear to be a valid " + getAuthProvider() + " request");
 		}
 		
 		// obtain the authorization code
@@ -128,7 +139,7 @@ public abstract class BaseAuthClient implements AuthClient {
 			return null;
 		}
 		
-		Map<String, String> map = new UrlParamExtractor().extractTokens(response);
+		Map<String, String> map = new UrlParamTokenExtractor().extractTokens(response);
     	return new BaseAuthenticatedUser(map.get("oauth_token"), map.get("oauth_token_secret"), "", 3600, this);
 	}
 	
@@ -140,10 +151,10 @@ public abstract class BaseAuthClient implements AuthClient {
 	 */
 	protected AuthenticatedUser verifyUserOAuth2(String verifier, String redirectURL) {
 		if(AssertUtils.isEmpty(verifier)) {
-			throw new IllegalArgumentException("The request does not appear to be a valid " + getProviderName() + " request");
+			throw new IllegalArgumentException("The request does not appear to be a valid " + getAuthProvider() + " request");
 		}
 		
-		System.out.println("Using " + getProviderName() + " verification code: " + verifier);
+		System.out.println("Using " + getAuthProvider() + " verification code: " + verifier);
 		// obtain the authorization code
 		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, null, redirectURL);
 		if(AssertUtils.isEmpty(response)) {
@@ -154,6 +165,15 @@ public abstract class BaseAuthClient implements AuthClient {
     	return new BaseAuthenticatedUser(map.get("access_token"), "", map.get("refresh_token"), 3600, this);
 	}
 
+	/**
+	 * The field naming policy to be used when parsing responses from JSON.
+	 * 
+	 * @return
+	 */
+	protected FieldNamingPolicy getFieldNamingPolicy() {
+		return FieldNamingPolicy.IDENTITY;
+	}
+	
 	/**
 	 * @see AuthClient#signOut()
 	 */
@@ -181,7 +201,7 @@ public abstract class BaseAuthClient implements AuthClient {
 		
 		String content = response.getContent();
 		System.out.println("Webresponse: " + content);
-		return GsonUtils.getGson().fromJson(content, clazz);
+		return GsonUtils.getGson(getFieldNamingPolicy()).fromJson(content, clazz);
 	}
 	
 	/**

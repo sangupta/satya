@@ -22,17 +22,20 @@
 package com.sangupta.satya.client.impl;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.jerry.oauth.extractor.JSONExtractor;
+import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.scope.LinkedInScopes;
 import com.sangupta.jerry.oauth.service.impl.LinkedInOAuthServiceImpl;
+import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.UserProfile;
+import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
+ * {@link AuthClient} for http://linkedin.com
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class LinkedInAuthClient extends BaseAuthClient {
 	
@@ -41,13 +44,13 @@ public class LinkedInAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	protected String getProviderName() {
-		return "LinkedIn";
+	protected AuthProvider getAuthProvider() {
+		return AuthProvider.LinkedIn;
 	}
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return JSONExtractor.INSTANCE;
+		return JSONTokenExtractor.INSTANCE;
 	}
 
 	@Override

@@ -21,50 +21,48 @@
 
 package com.sangupta.satya.examples;
 
-import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.jerry.util.ConsoleUtils;
-import com.sangupta.satya.ApiKeys;
-import com.sangupta.satya.AuthConfig;
-import com.sangupta.satya.AuthManager;
-import com.sangupta.satya.AuthPermissions;
-import com.sangupta.satya.AuthProvider;
-import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.jerry.http.WebInvoker;
+import com.sangupta.jerry.http.WebResponse;
+import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.client.impl.DropBoxAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Example to test {@link DropBoxAuthClient}
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class TestDropBoxClient {
 
 	public static void main(String[] args) {
-		String redirectURL = "http://localhost/satya/oauth/drpobox";
+		WebResponse response = WebInvoker.getResponse("http://www.google.com");
+		System.out.println(response.getContent());
 		
-		AuthConfig config = new AuthConfig();
+		System.out.println(GsonUtils.getGson().toJson(response));
 		
-		KeySecretPair dropBox = new KeySecretPair(ApiKeys.DropBox, ApiKeys.DropBoxSecret);
-		config.addConfig(AuthProvider.DropBox, dropBox);
-		
-		AuthManager.loadConfig(config);
-		
-		String url = AuthManager.getAuthRedirectURL(AuthProvider.DropBox, AuthPermissions.DEFAULT, redirectURL);
-		System.out.println(url);
-		
-		String code = ConsoleUtils.readLine("code: ", true);
-		
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, redirectURL);
-		System.out.println("User: " + user);
-		
-		if(user != null) {
-			UserProfile profile = user.getUserProfile();
-			System.out.println(profile);
-		}
+//		String redirectURL = "http://localhost/satya/oauth/drpobox";
+//		
+//		AuthConfig config = new AuthConfig();
+//		
+//		KeySecretPair dropBox = new KeySecretPair(ApiKeys.DropBox, ApiKeys.DropBoxSecret);
+//		config.addConfig(AuthProvider.DropBox, dropBox);
+//		
+//		AuthManager.loadConfig(config);
+//		
+//		String url = AuthManager.getAuthRedirectURL(AuthProvider.DropBox, AuthPermissions.DEFAULT, redirectURL);
+//		System.out.println(url);
+//		
+//		String code = ConsoleUtils.readLine("code: ", true);
+//		
+//		MockHttpServletRequest request = new MockHttpServletRequest();
+//		request.addParameter("code", code);
+//		AuthenticatedUser user = AuthManager.authenticateUser(request, redirectURL);
+//		System.out.println("User: " + user);
+//		
+//		if(user != null) {
+//			UserProfile profile = user.getUserProfile();
+//			System.out.println(profile);
+//		}
 	}
 	
 }

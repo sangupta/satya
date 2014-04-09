@@ -21,17 +21,17 @@
 
 package com.sangupta.satya.client.impl;
 
-import java.util.Map;
-
+import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
+import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.scope.GithubScopes;
 import com.sangupta.jerry.oauth.service.impl.GithubOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.UserProfile;
+import com.sangupta.satya.user.impl.GithubUserProfile;
 
 /**
  * {@link AuthClient} for http://github.com
@@ -50,33 +50,24 @@ public class GithubAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	protected String getProviderName() {
-		return "Github";
+	protected AuthProvider getAuthProvider() {
+		return AuthProvider.Github;
 	}
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return UrlParamExtractor.INSTANCE;
+		return UrlParamTokenExtractor.INSTANCE;
+	}
+	
+	@Override
+	protected FieldNamingPolicy getFieldNamingPolicy() {
+		return FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 	}
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
 		String url = "https://api.github.com/user";
-		
-		@SuppressWarnings("unchecked")
-		Map<String, String> map = this.getUsingJson(accessPair, url, Map.class);
-		if(map == null) {
-			return null;
-		}
-		
-		UserProfile profile = new UserProfile(AuthProvider.Github, map.get("id"));
-		
-		profile.setFullName(map.get("name"));
-		profile.setProfileImageURL(map.get("avatar_url"));
-		profile.setEmail(map.get("email"));
-		profile.setProfileLink(map.get("html_url"));
-		
-		return profile;
+		return this.getUsingJson(accessPair, url, GithubUserProfile.class);
 	}
 
 }

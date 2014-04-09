@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.user.UserProfile;
+import com.sangupta.satya.UserProfile;
 
 /**
  * Contract for all implementation specific authentication clients

@@ -30,14 +30,14 @@ import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.impl.LinkedInAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Example to test {@link LinkedInAuthClient}
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class TestLinkedInClient {
 
@@ -46,8 +46,8 @@ public class TestLinkedInClient {
 		
 		AuthConfig config = new AuthConfig();
 		
-		KeySecretPair google = new KeySecretPair(ApiKeys.LinkedIn, ApiKeys.LinkedInSecret);
-		config.addConfig(AuthProvider.LinkedIn, google);
+		KeySecretPair linkedIn = new KeySecretPair(ApiKeys.LinkedIn, ApiKeys.LinkedInSecret);
+		config.addConfig(AuthProvider.LinkedIn, linkedIn);
 		
 		AuthManager.loadConfig(config);
 		

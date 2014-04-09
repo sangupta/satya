@@ -23,26 +23,26 @@ package com.sangupta.satya.examples;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.util.ConsoleUtils;
+import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
 import com.sangupta.satya.AuthManager;
 import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.impl.GoogleAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Example to test {@link GoogleAuthClient}
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class TestGoogleClient {
 	
 	public static void main(String[] args) {
-		String redirectURL = "http://opensource.brickred.com/social/auth";
+		String redirectURL = "http://opensource.brickred.com/";
 		
 		AuthConfig config = new AuthConfig();
 		

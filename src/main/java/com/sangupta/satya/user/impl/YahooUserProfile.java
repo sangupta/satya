@@ -19,45 +19,45 @@
  * 
  */
 
-package com.sangupta.satya.client.impl;
+package com.sangupta.satya.user.impl;
 
-import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
-import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.service.impl.DropBoxOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.UserProfile;
-import com.sangupta.satya.client.AuthClient;
-import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.BaseUserProfile;
 
 /**
- * {@link AuthClient} for http://dropbox.com
+ * {@link UserProfile} implementation for Yahoo.com
  * 
  * @author sangupta
  * @since 1.0
  */
-public class DropBoxAuthClient extends BaseAuthClient {
+public class YahooUserProfile extends BaseUserProfile {
 
-	/**
-	 * 
-	 * @param keySecretPair
-	 */
-	public DropBoxAuthClient(KeySecretPair keySecretPair) {
-		super(new DropBoxOAuthServiceImpl(keySecretPair), "");
+	public YahooUserProfile() {
+		super(AuthProvider.Yahoo);
 	}
 
 	@Override
-	protected AuthProvider getAuthProvider() {
-		return AuthProvider.DropBox;
+	public String getUserID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	protected TokenExtractor getTokenExtractor() {
-		return JSONTokenExtractor.INSTANCE;
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
+	public String getProfileLink() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getProfileImageURL() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

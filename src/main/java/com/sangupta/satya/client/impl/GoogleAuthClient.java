@@ -21,16 +21,15 @@
 
 package com.sangupta.satya.client.impl;
 
-import java.util.Map;
-
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
-import com.sangupta.jerry.oauth.extractor.JSONExtractor;
+import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.UserProfile;
+import com.sangupta.satya.user.impl.GoogleUserProfile;
 
 /**
  * {@link AuthClient} for http://google.com
@@ -45,13 +44,13 @@ public class GoogleAuthClient extends BaseAuthClient {
 	}
 
 	@Override
-	protected String getProviderName() {
-		return "Google";
+	protected AuthProvider getAuthProvider() {
+		return AuthProvider.Google;
 	}
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return JSONExtractor.INSTANCE;
+		return JSONTokenExtractor.INSTANCE;
 	}
 
 	public boolean signOut() {
@@ -62,19 +61,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
 		String url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
 		
-		@SuppressWarnings("unchecked")
-		Map<String, String> map = this.getUsingJson(accessPair, url, Map.class);
-		
-		UserProfile profile = new UserProfile(AuthProvider.Google, map.get("id"));
-		profile.setEmail(map.get("email"));
-		profile.setFullName(map.get("name"));
-		profile.setFirstName(map.get("given_name"));
-		profile.setLastName(map.get("family_name"));
-		profile.setProfileLink(map.get("link"));
-		profile.setProfileImageURL(map.get("picture"));
-		profile.setGender(map.get("gender"));
-		
-		return profile;
+		return this.getUsingJson(accessPair, url, GoogleUserProfile.class);
 	}
 
 }

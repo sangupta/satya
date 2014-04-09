@@ -30,14 +30,14 @@ import com.sangupta.satya.AuthPermissions;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.MockHttpServletRequest;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.impl.TwitterAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * Example to test {@link TwitterAuthClient}
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public class TestTwitterClient {
 	

@@ -25,6 +25,7 @@ import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.util.StringUtils;
 import com.sangupta.satya.AuthenticatedUser;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 
 /**

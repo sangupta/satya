@@ -23,11 +23,12 @@ package com.sangupta.satya.client.impl;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamExtractor;
+import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.TwitterOAuthServiceImpl;
+import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.UserProfile;
 
 /**
  * {@link AuthClient} for http://twitter.com
@@ -38,13 +39,13 @@ import com.sangupta.satya.user.UserProfile;
 public class TwitterAuthClient extends BaseAuthClient {
 	
 	@Override
-	protected String getProviderName() {
-		return "Twitter";
+	protected AuthProvider getAuthProvider() {
+		return AuthProvider.Twitter;
 	}
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return UrlParamExtractor.INSTANCE;
+		return UrlParamTokenExtractor.INSTANCE;
 	}
 
 	public TwitterAuthClient(KeySecretPair pair) {
