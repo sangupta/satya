@@ -60,7 +60,7 @@ public class TestTwitterClient {
 		System.out.println("User: " + user);
 
 		if(user != null) {
-			UserProfile profile = user.getUserProfile();
+			UserProfile profile = user.fetchUserProfile();
 			System.out.println("User Profile: " + profile);
 		}
 	}

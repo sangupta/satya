@@ -41,7 +41,7 @@ public class TestFacebookClient {
 		System.out.println(user);
 
 		if(user != null) {
-			UserProfile profile = user.getUserProfile();
+			UserProfile profile = user.fetchUserProfile();
 			System.out.println("UserProfile: " + profile);
 		}
 	}

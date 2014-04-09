@@ -53,6 +53,12 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	private long expiry;
 	
 	/**
+	 * The {@link UserProfile} for the currently authenticated user.
+	 * 
+	 */
+	private UserProfile userProfile;
+	
+	/**
 	 * The authentication client to use
 	 */
 	private AuthClient authClient;
@@ -85,7 +91,18 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	
 	@Override
 	public UserProfile getUserProfile() {
-		return this.authClient.getUserProfile(this.userAccessPair);
+		if(this.userProfile == null) {
+			return this.fetchUserProfile();
+		}
+		
+		return this.userProfile;
+	}
+	
+	@Override
+	public UserProfile fetchUserProfile() {
+		UserProfile profile = this.authClient.getUserProfile(this.userAccessPair);
+		this.userProfile = profile;
+		return profile;
 	}
 	
 	@Override

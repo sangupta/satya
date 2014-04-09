@@ -42,13 +42,22 @@ public interface AuthenticatedUser {
 	 * @return
 	 */
 	public KeySecretPair getUserAccessPair();
-
+	
 	/**
-	 * Get the user profile.
+	 * Get the last user profile. Hit the webservice if none is available,
+	 * and store in in-memory cache, or use from cache if available.
 	 * 
 	 * @return
 	 */
 	public UserProfile getUserProfile();
+
+	/**
+	 * Get the latest user profile without using the in-memory cache.
+	 * This will shoot the webservice call everytime.
+	 * 
+	 * @return
+	 */
+	public UserProfile fetchUserProfile();
 
 	/**
 	 * Sign the request.

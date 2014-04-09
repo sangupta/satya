@@ -42,7 +42,7 @@ import com.sangupta.satya.client.impl.GoogleAuthClient;
 public class TestGoogleClient {
 	
 	public static void main(String[] args) {
-		String redirectURL = "http://opensource.brickred.com/";
+		String redirectURL = "https://www.multiplx.com/oauth2callback";
 		
 		AuthConfig config = new AuthConfig();
 		
@@ -62,7 +62,7 @@ public class TestGoogleClient {
 		System.out.println("User: " + user);
 		
 		if(user != null) {
-			UserProfile profile = user.getUserProfile();
+			UserProfile profile = user.fetchUserProfile();
 			System.out.println(profile);
 		}
 	}

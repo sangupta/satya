@@ -3,7 +3,7 @@ Satya
 
 **Social Authentication Library**
 
-The library is very nascent and in development. It won't compile for sure - so go ahead and work it up.
+The library is nascent and in development. It now compiles and works for some providers as well.
 
 Integrated Social Networks
 --------------------------

@@ -73,7 +73,7 @@ public class TestMicrosoftLiveClient {
 		
 		// print user profile - if we can
 		if(user != null) {
-			UserProfile profile = user.getUserProfile();
+			UserProfile profile = user.fetchUserProfile();
 			System.out.println(profile);
 		}
 	}
