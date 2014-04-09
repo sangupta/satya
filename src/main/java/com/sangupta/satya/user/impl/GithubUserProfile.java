@@ -100,6 +100,8 @@ public class GithubUserProfile extends BaseUserProfile {
 	private long diskUsage;
 	
 	private long collaborators;
+	
+	private GithubPlan plan;
 
 	/**
 	 * Default constructor
@@ -604,6 +606,92 @@ public class GithubUserProfile extends BaseUserProfile {
 	 */
 	public void setCollaborators(long collaborators) {
 		this.collaborators = collaborators;
+	}
+
+	/**
+	 * @return the plan
+	 */
+	public GithubPlan getPlan() {
+		return plan;
+	}
+
+	/**
+	 * @param plan the plan to set
+	 */
+	public void setPlan(GithubPlan plan) {
+		this.plan = plan;
+	}
+
+	// EMBEDDED STATIC CLASS
+
+	public static class GithubPlan {
+		
+		private String name;
+		
+		private long space;
+		
+		private long collaborators;
+		
+		private long privateRepos;
+		
+		// Usual accessors follow
+
+		/**
+		 * @return the name
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * @param name the name to set
+		 */
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		/**
+		 * @return the space
+		 */
+		public long getSpace() {
+			return space;
+		}
+
+		/**
+		 * @param space the space to set
+		 */
+		public void setSpace(long space) {
+			this.space = space;
+		}
+
+		/**
+		 * @return the collaborators
+		 */
+		public long getCollaborators() {
+			return collaborators;
+		}
+
+		/**
+		 * @param collaborators the collaborators to set
+		 */
+		public void setCollaborators(long collaborators) {
+			this.collaborators = collaborators;
+		}
+
+		/**
+		 * @return the privateRepos
+		 */
+		public long getPrivateRepos() {
+			return privateRepos;
+		}
+
+		/**
+		 * @param privateRepos the privateRepos to set
+		 */
+		public void setPrivateRepos(long privateRepos) {
+			this.privateRepos = privateRepos;
+		}
+
 	}
 
 }

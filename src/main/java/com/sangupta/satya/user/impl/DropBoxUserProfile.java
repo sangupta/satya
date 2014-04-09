@@ -32,6 +32,14 @@ import com.sangupta.satya.user.BaseUserProfile;
  * @since 1.0
  */
 public class DropBoxUserProfile extends BaseUserProfile {
+	
+	private String referralLink;
+	
+	private String displayName;
+	
+	private long uid;
+	
+	private String country;
 
 	public DropBoxUserProfile() {
 		super(AuthProvider.DropBox);
@@ -39,26 +47,73 @@ public class DropBoxUserProfile extends BaseUserProfile {
 
 	@Override
 	public String getUserID() {
-		// TODO Auto-generated method stub
-		return null;
+		return String.valueOf(this.uid);
 	}
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.displayName;
 	}
 
 	@Override
 	public String getProfileLink() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getProfileImageURL() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// Usual accessors follow
+
+	/**
+	 * @return the referralLink
+	 */
+	public String getReferralLink() {
+		return referralLink;
+	}
+
+	/**
+	 * @param referralLink the referralLink to set
+	 */
+	public void setReferralLink(String referralLink) {
+		this.referralLink = referralLink;
+	}
+
+	/**
+	 * @return the uid
+	 */
+	public long getUid() {
+		return uid;
+	}
+
+	/**
+	 * @param uid the uid to set
+	 */
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+	/**
+	 * @return the country
+	 */
+	public String getCountry() {
+		return country;
+	}
+
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	/**
+	 * @param displayName the displayName to set
+	 */
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 }
