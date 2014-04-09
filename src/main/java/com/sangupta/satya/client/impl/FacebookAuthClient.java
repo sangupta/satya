@@ -21,6 +21,7 @@
 
 package com.sangupta.satya.client.impl;
 
+import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
@@ -56,6 +57,11 @@ public class FacebookAuthClient extends BaseAuthClient {
 	@Override
 	protected TokenExtractor getTokenExtractor() {
 		return UrlParamTokenExtractor.INSTANCE;
+	}
+	
+	@Override
+	protected FieldNamingPolicy getFieldNamingPolicy() {
+		return FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 	}
 
 	@Override
