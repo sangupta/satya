@@ -96,7 +96,7 @@ public abstract class BaseUserProfile implements UserProfile {
 		builder.append("[UserProfile: ");
 		builder.append(this.authProvider.toString());
 		builder.append("; ");
-		builder.append(this.email);
+		builder.append(this.getDisplayName());
 		builder.append("]");
 		
 		return builder.toString();

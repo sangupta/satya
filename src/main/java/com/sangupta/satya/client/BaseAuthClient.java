@@ -25,6 +25,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.http.WebInvoker;
 import com.sangupta.jerry.http.WebRequest;
@@ -48,6 +51,8 @@ import com.sangupta.satya.user.BaseAuthenticatedUser;
  *
  */
 public abstract class BaseAuthClient implements AuthClient {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseAuthClient.class);
 	
 	/**
 	 * The {@link OAuthService} to use
@@ -139,7 +144,7 @@ public abstract class BaseAuthClient implements AuthClient {
 			return null;
 		}
 		
-		Map<String, String> map = new UrlParamTokenExtractor().extractTokens(response);
+		Map<String, String> map = getTokenExtractor().extractTokens(response);
     	return new BaseAuthenticatedUser(map.get("oauth_token"), map.get("oauth_token_secret"), "", 3600, this);
 	}
 	
@@ -187,20 +192,26 @@ public abstract class BaseAuthClient implements AuthClient {
 	 */
 	@Override
 	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz) {
+		url = this.service.signRequestUrl(url, accessPair);
+		LOGGER.debug("Hitting signed URL: {}", url);
+		
 		WebRequest request = WebInvoker.getWebRequest(url, WebRequestMethod.GET);
 		this.service.signRequest(request, accessPair);
+		
 		WebResponse response = WebInvoker.executeSilently(request);
-		if(response != null) {
-			System.out.println("Response: " + response.trace());
-			System.out.println(response.getContent());
+		if(response == null) {
+			LOGGER.error("Null response from url: {}", url);
+			return null;
 		}
 		
 		if(!response.isSuccess()) {
+			LOGGER.error("Invalid response from url: {} with response: {}", url, response.trace());
+			LOGGER.error(response.getContent());
 			return null;
 		}
 		
 		String content = response.getContent();
-		System.out.println("Webresponse: " + content);
+		LOGGER.debug("Webresponse: " + content);
 		return GsonUtils.getGson(getFieldNamingPolicy()).fromJson(content, clazz);
 	}
 	

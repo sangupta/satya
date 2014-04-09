@@ -32,6 +32,18 @@ import com.sangupta.satya.user.BaseUserProfile;
  * @since 1.0
  */
 public class MicrosoftLiveUserProfile extends BaseUserProfile {
+	
+	private String id;
+	
+	private String firstName;
+	
+	private String lastName;
+	
+	private String name;
+	
+	private String gender;
+	
+	private String locale;
 
 	public MicrosoftLiveUserProfile() {
 		super(AuthProvider.MicrosoftLive);
@@ -39,26 +51,108 @@ public class MicrosoftLiveUserProfile extends BaseUserProfile {
 
 	@Override
 	public String getUserID() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id;
 	}
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public String getProfileLink() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getProfileImageURL() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// Usual accessors follow
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public String getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * @return the locale
+	 */
+	public String getLocale() {
+		return locale;
+	}
+
+	/**
+	 * @param locale the locale to set
+	 */
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }
