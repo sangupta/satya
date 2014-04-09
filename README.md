@@ -9,9 +9,9 @@ Integrated Social Networks
 --------------------------
 
 * Google
-* Yahoo
+* Yahoo *broken*
 * Facebook
-* LinkedIn
+* LinkedIn *broken*
 * DropBox
 * Microsoft Live
 * Twitter

@@ -21,6 +21,7 @@
 
 package com.sangupta.satya.client.impl;
 
+import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
@@ -29,6 +30,7 @@ import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.impl.TwitterUserProfile;
 
 /**
  * {@link AuthClient} for http://twitter.com
@@ -51,10 +53,16 @@ public class TwitterAuthClient extends BaseAuthClient {
 	public TwitterAuthClient(KeySecretPair pair) {
 		super(new TwitterOAuthServiceImpl(pair), "");
 	}
+	
+	@Override
+	protected FieldNamingPolicy getFieldNamingPolicy() {
+		return FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
+	}
 
 	@Override
 	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		return null;
+		String url = "https://api.twitter.com/1.1/account/verify_credentials.json";
+		return this.getUsingJson(accessPair, url, TwitterUserProfile.class);
 	}
 
 }
