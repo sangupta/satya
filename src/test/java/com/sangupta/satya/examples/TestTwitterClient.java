@@ -26,6 +26,7 @@ import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.http.WebRequestMethod;
 import com.sangupta.jerry.http.WebResponse;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -53,14 +54,14 @@ public class TestTwitterClient {
 		
 		AuthManager.loadConfig(config);
 		
-		String loginURL = AuthManager.getAuthRedirectURL(AuthProvider.Twitter, AuthPermissions.DEFAULT, "oob");
-		System.out.println("Login URL: " + loginURL);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Twitter, AuthPermissions.DEFAULT, "oob");
+		System.out.println("Login URL: " + tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, loginURL);
+		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
 		System.out.println("User: " + user);
 
 		if(user != null) {

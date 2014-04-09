@@ -21,7 +21,10 @@
 
 package com.sangupta.satya.examples;
 
+import java.io.UnsupportedEncodingException;
+
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -41,7 +44,7 @@ import com.sangupta.satya.client.impl.YahooAuthClient;
  */
 public class TestYahooClient {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 		String redirectURL = "http://opensource.brickred.com/social/auth";
 
 		// create auth config
@@ -55,7 +58,7 @@ public class TestYahooClient {
 		AuthManager.loadConfig(config);
 		
 		// get redirect URL
-		String loginURL = AuthManager.getAuthRedirectURL(AuthProvider.Yahoo, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl loginURL = AuthManager.getAuthRedirectURL(AuthProvider.Yahoo, AuthPermissions.DEFAULT, redirectURL);
 		System.out.println("Open the URL in browser: " + loginURL);
 		
 		// read code as provided by the browser

@@ -34,8 +34,8 @@ import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.http.WebRequestMethod;
 import com.sangupta.jerry.http.WebResponse;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.service.OAuth1ServiceImpl;
 import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.OAuthService;
@@ -81,7 +81,7 @@ public abstract class BaseAuthClient implements AuthClient {
 	 * @see AuthClient#getLoginRedirectURL(String)
 	 */
 	@Override
-	public String getLoginRedirectURL(String successUrl) {
+	public TokenAndUrl getLoginRedirectURL(String successUrl) {
 		return service.getLoginURL(successUrl, scope);
 	}
 	
@@ -97,7 +97,7 @@ public abstract class BaseAuthClient implements AuthClient {
 	 * 
 	 */
 	@Override
-	public AuthenticatedUser verifyUser(HttpServletRequest request, final String redirectURL) {
+	public AuthenticatedUser verifyUser(HttpServletRequest request, final TokenAndUrl tokenAndUrl) {
 		// extract the code from the request parameter
 		String errorCode = request.getParameter("error");
 		if(AssertUtils.isNotEmpty(errorCode)) {
@@ -108,7 +108,7 @@ public abstract class BaseAuthClient implements AuthClient {
 		// find the actual code
 		String code = request.getParameter("code");
 		
-		return this.verifyUser(code, redirectURL);
+		return this.verifyUser(code, tokenAndUrl);
 	}
 	
 	/**
@@ -118,28 +118,25 @@ public abstract class BaseAuthClient implements AuthClient {
 	protected abstract TokenExtractor getTokenExtractor();
 	
 	@Override
-	public AuthenticatedUser verifyUser(String verifier, String redirectURL) {
+	public AuthenticatedUser verifyUser(String verifier, TokenAndUrl tokenAndUrl) {
 		if(this.service instanceof OAuth2ServiceImpl) {
-			return verifyUserOAuth2(verifier, redirectURL);
+			return verifyUserOAuth2(tokenAndUrl, verifier);
 		}
 		
 		if(this.service instanceof OAuth1ServiceImpl) {
-			return verifyUserOAuth1(verifier, redirectURL);
+			return verifyUserOAuth1(tokenAndUrl, verifier);
 		}
 		
 		throw new IllegalStateException("Don't know how to handle the verification of user");
 	}
 	
-	protected AuthenticatedUser verifyUserOAuth1(String verifier, String redirectURL) {
-		int index = redirectURL.indexOf("?");
-		final String token = UrlParamTokenExtractor.INSTANCE.extractTokens(redirectURL.substring(index + 1)).get("oauth_token");
-		
-		if(AssertUtils.isEmpty(token) || AssertUtils.isEmpty(verifier)) {
+	protected AuthenticatedUser verifyUserOAuth1(TokenAndUrl tokenAndUrl, String verifier) {
+		if(AssertUtils.isEmpty(verifier)) {
 			throw new IllegalArgumentException("The request does not appear to be a valid " + getAuthProvider() + " request");
 		}
 		
 		// obtain the authorization code
-		String response = ((OAuth1ServiceImpl) this.service).getAuthorizationResponse(token, verifier, redirectURL);
+		String response = this.service.getAuthorizationResponse(tokenAndUrl, verifier);
 		if(AssertUtils.isEmpty(response)) {
 			return null;
 		}
@@ -154,14 +151,14 @@ public abstract class BaseAuthClient implements AuthClient {
 	 * @param redirectURL
 	 * @return
 	 */
-	protected AuthenticatedUser verifyUserOAuth2(String verifier, String redirectURL) {
+	protected AuthenticatedUser verifyUserOAuth2(TokenAndUrl tokenAndUrl, String verifier) {
 		if(AssertUtils.isEmpty(verifier)) {
 			throw new IllegalArgumentException("The request does not appear to be a valid " + getAuthProvider() + " request");
 		}
 		
 		System.out.println("Using " + getAuthProvider() + " verification code: " + verifier);
 		// obtain the authorization code
-		String response = ((OAuth2ServiceImpl) this.service).getAuthorizationResponse(verifier, null, redirectURL);
+		String response = this.service.getAuthorizationResponse(tokenAndUrl, verifier);
 		if(AssertUtils.isEmpty(response)) {
 			return null;
 		}

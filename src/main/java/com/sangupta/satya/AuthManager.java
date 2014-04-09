@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.impl.DropBoxAuthClient;
@@ -153,7 +154,7 @@ public final class AuthManager {
 	 *             <code>null</code>, or if the callback URL is
 	 *             <code>null/empty</code>
 	 */
-	public static String getAuthRedirectURL(String provider, AuthPermissions permissions, String callbackURL) {
+	public static TokenAndUrl getAuthRedirectURL(String provider, AuthPermissions permissions, String callbackURL) {
 		AuthProvider authProvider = AuthProvider.fromString(provider);
 		return getAuthRedirectURL(authProvider, permissions, callbackURL);
 	}
@@ -180,7 +181,7 @@ public final class AuthManager {
 	 *             <code>null</code>, or if the callback URL is
 	 *             <code>null/empty</code>
 	 */
-	public static String getAuthRedirectURL(AuthProvider provider, AuthPermissions permissions, String callbackURL) {
+	public static TokenAndUrl getAuthRedirectURL(AuthProvider provider, AuthPermissions permissions, String callbackURL) {
 		if(provider == null) {
 			throw new IllegalArgumentException("Authentication provider cannot be null");
 		}
@@ -219,14 +220,14 @@ public final class AuthManager {
 	 *             if we are unable to detect the {@link AuthClient} from the
 	 *             provided {@link HttpServletRequest}
 	 */
-	public static AuthenticatedUser authenticateUser(HttpServletRequest request, String redirectURL) {
+	public static AuthenticatedUser authenticateUser(HttpServletRequest request, TokenAndUrl tokenAndUrl) {
 		// decipher the authprovider based on the request
 		AuthClient client = decipherAuthClientFromRequest(request);
 		if(client == null) {
 			throw new AssertionError("Unable to detect the authentication client from the callback that was received");
 		}
 		
-		return client.verifyUser(request, redirectURL);
+		return client.verifyUser(request, tokenAndUrl);
 	}
 	
 	/**
@@ -248,13 +249,13 @@ public final class AuthManager {
 	 * @throws IllegalArgumentException
 	 *             if the given {@link AuthProvider} is <code>null</code>
 	 */
-	public static AuthenticatedUser authenticateUser(AuthProvider authProvider, String token, String redirectURL) {
+	public static AuthenticatedUser authenticateUser(AuthProvider authProvider, String token, TokenAndUrl tokenAndUrl) {
 		AuthClient client = AUTH_CLIENTS.get(authProvider);
 		if(client == null) {
 			throw new AssertionError("No authentication client configured for the given provider: " + authProvider);
 		}
 		
-		return client.verifyUser(token, redirectURL);
+		return client.verifyUser(token, tokenAndUrl);
 	}
 
 	/**

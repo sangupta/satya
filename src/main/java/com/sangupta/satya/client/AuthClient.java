@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 
@@ -45,7 +46,7 @@ public interface AuthClient {
 	 * @param successUrl
 	 * @return
 	 */
-	public String getLoginRedirectURL(String successUrl);
+	public TokenAndUrl getLoginRedirectURL(String successUrl);
 	
 	/**
 	 * Verify that a user did grant us permissions so that we can invoke
@@ -55,7 +56,7 @@ public interface AuthClient {
 	 * @param redirectURL
 	 * @return
 	 */
-	public AuthenticatedUser verifyUser(HttpServletRequest request, String redirectURL);
+	public AuthenticatedUser verifyUser(HttpServletRequest request, TokenAndUrl tokenAndUrl);
 	
 	/**
 	 * 
@@ -63,7 +64,7 @@ public interface AuthClient {
 	 * @param redirectURL
 	 * @return
 	 */
-	public AuthenticatedUser verifyUser(String verifier, String redirectURL);
+	public AuthenticatedUser verifyUser(String verifier, TokenAndUrl tokenAndUrl);
 
 	/**
 	 * Sign-out this current user from the backend, if APIs are available.

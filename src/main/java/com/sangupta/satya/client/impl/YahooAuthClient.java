@@ -23,6 +23,7 @@ package com.sangupta.satya.client.impl;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
+import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.YahooOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.UserProfile;
@@ -48,7 +49,7 @@ public class YahooAuthClient extends BaseAuthClient {
 
 	@Override
 	protected TokenExtractor getTokenExtractor() {
-		return null;
+		return UrlParamTokenExtractor.INSTANCE;
 	}
 
 	@Override

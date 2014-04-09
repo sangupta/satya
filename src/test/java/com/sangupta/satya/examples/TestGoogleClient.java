@@ -22,6 +22,7 @@
 package com.sangupta.satya.examples;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -51,14 +52,14 @@ public class TestGoogleClient {
 		
 		AuthManager.loadConfig(config);
 		
-		String url = AuthManager.getAuthRedirectURL(AuthProvider.Google, AuthPermissions.DEFAULT, redirectURL);
-		System.out.println(url);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Google, AuthPermissions.DEFAULT, redirectURL);
+		System.out.println(tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, redirectURL);
+		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
 		System.out.println("User: " + user);
 		
 		if(user != null) {
