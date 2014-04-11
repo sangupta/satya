@@ -21,15 +21,19 @@
 
 package com.sangupta.satya.client.impl;
 
+import java.util.Map;
+
 import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.DropBoxOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.BaseAuthenticatedUser;
 import com.sangupta.satya.user.impl.DropBoxUserProfile;
 
 /**
@@ -64,9 +68,19 @@ public class DropBoxAuthClient extends BaseAuthClient {
 	}
 	
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		String url = "https://api.dropbox.com/1/account/info";
-		return this.getUsingJson(accessPair, url, DropBoxUserProfile.class);
+	protected AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters) {
+		return new BaseAuthenticatedUser(this, rawParameters) {
+			
+			@Override
+			public String getUserProfileURL() {
+				return "https://api.dropbox.com/1/account/info";
+			}
+			
+			@Override
+			public Class<? extends UserProfile> getUserProfileClass() {
+				return DropBoxUserProfile.class;
+			}
+		};
 	}
-
+	
 }

@@ -21,14 +21,19 @@
 
 package com.sangupta.satya.client.impl;
 
+import java.util.Map;
+
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.YahooOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.BaseAuthenticatedUser;
+import com.sangupta.satya.user.impl.YahooUserProfile;
 
 /**
  * {@link AuthClient} for http://yahoo.com
@@ -51,10 +56,22 @@ public class YahooAuthClient extends BaseAuthClient {
 	protected TokenExtractor getTokenExtractor() {
 		return UrlParamTokenExtractor.INSTANCE;
 	}
-
+	
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		return null;
+	protected AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters) {
+		return new BaseAuthenticatedUser(this, rawParameters) {
+			
+			@Override
+			public String getUserProfileURL() {
+				String userID = this.rawParameters.get("xoauth_yahoo_guid");
+				return "https://social.yahooapis.com/v1/user/" + userID + "/profile";
+			}
+			
+			@Override
+			public Class<? extends UserProfile> getUserProfileClass() {
+				return YahooUserProfile.class;
+			}
+		};
 	}
 
 }

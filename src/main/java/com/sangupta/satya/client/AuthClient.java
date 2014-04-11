@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
+import com.sangupta.jerry.oauth.service.OAuthService;
 import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.UserProfile;
 
 /**
  * Contract for all implementation specific authentication clients
@@ -74,13 +74,6 @@ public interface AuthClient {
 	public boolean signOut();
 
 	/**
-	 * Fetch the user's profile.
-	 * 
-	 * @return
-	 */
-	public UserProfile getUserProfile(KeySecretPair accessPair);
-	
-	/**
 	 * Make a HTTP GET request and return its response.
 	 *  
 	 * @param url
@@ -95,5 +88,12 @@ public interface AuthClient {
 	 * @param request
 	 */
 	public void signRequest(KeySecretPair accessPair, WebRequest request);
+	
+	/**
+	 * Return the associated {@link OAuthService} being used.
+	 * 
+	 * @return
+	 */
+	public OAuthService getOAuthService();
 	
 }

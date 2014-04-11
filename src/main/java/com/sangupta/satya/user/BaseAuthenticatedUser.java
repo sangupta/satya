@@ -21,8 +21,11 @@
 
 package com.sangupta.satya.user;
 
+import java.util.Map;
+
 import com.sangupta.jerry.http.WebRequest;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
+import com.sangupta.jerry.oauth.service.OAuthService;
 import com.sangupta.jerry.util.StringUtils;
 import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
@@ -35,33 +38,39 @@ import com.sangupta.satya.client.AuthClient;
  * @author sangupta
  * @since 1.0
  */
-public class BaseAuthenticatedUser implements AuthenticatedUser {
+public abstract class BaseAuthenticatedUser implements AuthenticatedUser {
 
+	/**
+	 * The authentication client to use
+	 */
+	protected AuthClient authClient;
+	
+	/**
+	 * The raw parameters obtained during the final call of OAuth authorization
+	 * workflow
+	 */
+	protected Map<String, String> rawParameters;
+	
 	/**
 	 * The access token obtained from the server
 	 */
-	private KeySecretPair userAccessPair;
+	protected KeySecretPair userAccessPair;
 	
 	/**
 	 * The refresh token obtained from the server
 	 */
-	private String userRefreshToken;
+	protected String userRefreshToken;
 	
 	/**
 	 * The time in millis when the token expires
 	 */
-	private long expiry;
+	protected long expiry;
 	
 	/**
 	 * The {@link UserProfile} for the currently authenticated user.
 	 * 
 	 */
-	private UserProfile userProfile;
-	
-	/**
-	 * The authentication client to use
-	 */
-	private AuthClient authClient;
+	protected UserProfile userProfile;
 	
 	/**
 	 * 
@@ -71,26 +80,52 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 	 * @param expiresIn
 	 * @param authClient
 	 */
-	public BaseAuthenticatedUser(String accessToken, String accessSecret, String refreshToken, String expiresIn, AuthClient authClient) {
-		this(accessToken, accessSecret, refreshToken, StringUtils.getLongValue(expiresIn, 3600), authClient);
+	public BaseAuthenticatedUser(AuthClient authClient, Map<String, String> rawParameters) {
+		this.authClient = authClient;
+		this.rawParameters = rawParameters;
+		
+		// inferred parameters
+		OAuthService service = this.authClient.getOAuthService();
+		
+		this.userAccessPair = new KeySecretPair(rawParameters.get(service.getAccessTokenParamName()), rawParameters.get(service.getAccessTokenSecretParamName()));
+		if(service.getRefreshTokenParamName() != null) {
+			this.userRefreshToken = rawParameters.get(service.getRefreshTokenParamName());
+		}
+		
+		if(service.getAccessTokenExpiryParamName() != null) {
+			this.expiry = StringUtils.getLongValue(rawParameters.get(service.getAccessTokenExpiryParamName()), getDefaultTokenExpiryTime());
+		}
 	}
 	
 	/**
-	 * 
-	 * @param accessToken
-	 * @param refreshToken
-	 * @param expiry
+	 * Return the URL to be used for fetching the user profile.
+	 *  
+	 * @return
 	 */
-	public BaseAuthenticatedUser(String accessToken, String accessSecret, String refreshToken, long expiresIn, AuthClient authClient) {
-		this.userAccessPair = new KeySecretPair(accessToken, accessSecret);
-		this.userRefreshToken = refreshToken;
-		this.expiry = System.currentTimeMillis() + expiresIn;
-		
-		this.authClient = authClient;
+	public abstract String getUserProfileURL();
+	
+	/**
+	 * Return the class to be used for populating user profile.
+	 * 
+	 * @return
+	 */
+	public abstract Class<? extends UserProfile> getUserProfileClass();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public long getDefaultTokenExpiryTime() {
+		return 3600;
 	}
 	
+	/**
+	 * Get the user profile - uses cache if value was previously fetched
+	 * from server.
+	 * 
+	 */
 	@Override
-	public UserProfile getUserProfile() {
+	public final UserProfile getUserProfile() {
 		if(this.userProfile == null) {
 			return this.fetchUserProfile();
 		}
@@ -98,13 +133,22 @@ public class BaseAuthenticatedUser implements AuthenticatedUser {
 		return this.userProfile;
 	}
 	
+	/**
+	 * Fetch the user profile from the remote server even if available in 
+	 * client cache
+	 * 
+	 */
 	@Override
 	public UserProfile fetchUserProfile() {
-		UserProfile profile = this.authClient.getUserProfile(this.userAccessPair);
+		UserProfile profile = this.authClient.getUsingJson(this.userAccessPair, getUserProfileURL(), getUserProfileClass());
 		this.userProfile = profile;
 		return profile;
 	}
 	
+	/**
+	 * Sign-out the current user from the remote server.
+	 * 
+	 */
 	@Override
 	public void signOut() {
 		this.userAccessPair = null;

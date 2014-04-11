@@ -21,6 +21,8 @@
 
 package com.sangupta.satya.client.impl;
 
+import java.util.Map;
+
 import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
@@ -28,9 +30,11 @@ import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
 import com.sangupta.jerry.oauth.service.impl.MicrosoftLiveOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
+import com.sangupta.satya.user.BaseAuthenticatedUser;
 import com.sangupta.satya.user.impl.MicrosoftLiveUserProfile;
 
 /**
@@ -59,11 +63,21 @@ public class MicrosoftLiveAuthClient extends BaseAuthClient {
 	protected FieldNamingPolicy getFieldNamingPolicy() {
 		return FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 	}
-
+	
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		String url = "https://apis.live.net/v5.0/me";
-		return this.getUsingJson(accessPair, url, MicrosoftLiveUserProfile.class);
+	protected AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters) {
+		return new BaseAuthenticatedUser(this, rawParameters) {
+			
+			@Override
+			public String getUserProfileURL() {
+				return "https://apis.live.net/v5.0/me";
+			}
+			
+			@Override
+			public Class<? extends UserProfile> getUserProfileClass() {
+				return MicrosoftLiveUserProfile.class;
+			}
+		};
 	}
 
 }

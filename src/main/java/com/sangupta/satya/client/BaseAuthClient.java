@@ -43,7 +43,6 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.user.BaseAuthenticatedUser;
 
 /**
  * 
@@ -93,6 +92,14 @@ public abstract class BaseAuthClient implements AuthClient {
 	protected abstract AuthProvider getAuthProvider();
 	
 	/**
+	 * Return the {@link OAuthService} being used.
+	 * 
+	 */
+	public OAuthService getOAuthService() {
+		return this.service;
+	}
+	
+	/**
 	 * Verify the incoming user.
 	 * 
 	 */
@@ -116,6 +123,8 @@ public abstract class BaseAuthClient implements AuthClient {
 	 * @return
 	 */
 	protected abstract TokenExtractor getTokenExtractor();
+	
+	protected abstract AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters);
 	
 	@Override
 	public AuthenticatedUser verifyUser(String verifier, TokenAndUrl tokenAndUrl) {
@@ -142,7 +151,7 @@ public abstract class BaseAuthClient implements AuthClient {
 		}
 		
 		Map<String, String> map = getTokenExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("oauth_token"), map.get("oauth_token_secret"), "", 3600, this);
+    	return createNewAuthenticatedUser(map);
 	}
 	
 	/**
@@ -164,7 +173,7 @@ public abstract class BaseAuthClient implements AuthClient {
 		}
 		
 		Map<String, String> map = getTokenExtractor().extractTokens(response);
-    	return new BaseAuthenticatedUser(map.get("access_token"), "", map.get("refresh_token"), 3600, this);
+		return createNewAuthenticatedUser(map);
 	}
 
 	/**
@@ -219,4 +228,5 @@ public abstract class BaseAuthClient implements AuthClient {
 	public void signRequest(KeySecretPair accessPair, WebRequest request) {
 		this.service.signRequest(request, accessPair);
 	}
+	
 }

@@ -21,15 +21,19 @@
 
 package com.sangupta.satya.client.impl;
 
+import java.util.Map;
+
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.service.impl.GoogleOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.impl.GoogleUserProfile;
+import com.sangupta.satya.user.BaseAuthenticatedUser;
+import com.sangupta.satya.user.impl.GithubUserProfile;
 
 /**
  * {@link AuthClient} for http://google.com
@@ -56,12 +60,21 @@ public class GoogleAuthClient extends BaseAuthClient {
 	public boolean signOut() {
 		return false;
 	}
-
+	
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		String url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
-		
-		return this.getUsingJson(accessPair, url, GoogleUserProfile.class);
+	protected AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters) {
+		return new BaseAuthenticatedUser(this, rawParameters) {
+			
+			@Override
+			public String getUserProfileURL() {
+				return "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
+			}
+			
+			@Override
+			public Class<? extends UserProfile> getUserProfileClass() {
+				return GithubUserProfile.class;
+			}
+		};
 	}
 
 }

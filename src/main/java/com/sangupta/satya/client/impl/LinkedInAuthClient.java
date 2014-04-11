@@ -21,16 +21,20 @@
 
 package com.sangupta.satya.client.impl;
 
+import java.util.Map;
+
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.scope.LinkedInScopes;
 import com.sangupta.jerry.oauth.service.impl.LinkedInOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
+import com.sangupta.satya.AuthenticatedUser;
 import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
-import com.sangupta.satya.user.impl.LinkedInUserProfile;
+import com.sangupta.satya.user.BaseAuthenticatedUser;
+import com.sangupta.satya.user.impl.GithubUserProfile;
 
 /**
  * {@link AuthClient} for http://linkedin.com
@@ -53,11 +57,21 @@ public class LinkedInAuthClient extends BaseAuthClient {
 	protected TokenExtractor getTokenExtractor() {
 		return JSONTokenExtractor.INSTANCE;
 	}
-
+	
 	@Override
-	public UserProfile getUserProfile(KeySecretPair accessPair) {
-		String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,site-standard-profile-request,summary,picture-url,public-profile-url,email-address)?format=json";
-		return this.getUsingJson(accessPair, url, LinkedInUserProfile.class);
+	protected AuthenticatedUser createNewAuthenticatedUser(Map<String, String> rawParameters) {
+		return new BaseAuthenticatedUser(this, rawParameters) {
+			
+			@Override
+			public String getUserProfileURL() {
+				return "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,site-standard-profile-request,summary,picture-url,public-profile-url,email-address)?format=json";
+			}
+			
+			@Override
+			public Class<? extends UserProfile> getUserProfileClass() {
+				return GithubUserProfile.class;
+			}
+		};
 	}
 
 }
