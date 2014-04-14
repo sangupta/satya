@@ -64,13 +64,14 @@ public class YahooAuthClient extends BaseAuthClient {
 			@Override
 			public String getUserProfileURL() {
 				String userID = this.rawParameters.get("xoauth_yahoo_guid");
-				return "https://social.yahooapis.com/v1/user/" + userID + "/profile";
+				return "https://social.yahooapis.com/v1/user/" + userID + "/profile?format=json";
 			}
 			
 			@Override
 			public Class<? extends UserProfile> getUserProfileClass() {
 				return YahooUserProfile.class;
 			}
+			
 		};
 	}
 
