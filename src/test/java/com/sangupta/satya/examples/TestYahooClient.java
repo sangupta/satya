@@ -21,8 +21,6 @@
 
 package com.sangupta.satya.examples;
 
-import java.io.UnsupportedEncodingException;
-
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.ConsoleUtils;
@@ -44,7 +42,7 @@ import com.sangupta.satya.client.impl.YahooAuthClient;
  */
 public class TestYahooClient {
 	
-	public static void main(String[] args) throws UnsupportedEncodingException {
+	public static void main(String[] args) throws Exception {
 		String redirectURL = "http://opensource.brickred.com/social/auth";
 
 		// create auth config
@@ -65,11 +63,11 @@ public class TestYahooClient {
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		// create a mock request to continue workflow
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.addParameter("code", code);
+		MockHttpServletRequest request1 = new MockHttpServletRequest();
+		request1.addParameter("code", code);
 		
 		// get the user from the yahoo api
-		AuthenticatedUser user = AuthManager.authenticateUser(request, loginURL);
+		AuthenticatedUser user = AuthManager.authenticateUser(request1, loginURL);
 		
 		// print user details
 		System.out.println(user);

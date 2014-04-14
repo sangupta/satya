@@ -21,10 +21,6 @@
 
 package com.sangupta.satya.examples;
 
-import com.sangupta.jerry.http.WebInvoker;
-import com.sangupta.jerry.http.WebRequest;
-import com.sangupta.jerry.http.WebRequestMethod;
-import com.sangupta.jerry.http.WebResponse;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.ConsoleUtils;
@@ -68,17 +64,6 @@ public class TestTwitterClient {
 			UserProfile profile = user.fetchUserProfile();
 			System.out.println("User Profile: " + profile);
 		}
-		
-		WebRequest wr = WebInvoker.getWebRequest("https://api.twitter.com/1.1/account/verify_credentials.json", WebRequestMethod.GET);
-		user.signRequest(wr);
-		WebResponse wrs = WebInvoker.executeSilently(wr);
-		if(wrs == null) {
-			System.out.println("null response");
-			return;
-		}
-		
-		System.out.println(wrs.trace());
-		System.out.println(wrs.getContent());
 	}
 
 }
