@@ -32,6 +32,8 @@ import com.sangupta.satya.user.BaseUserProfile;
  * @since 1.0
  */
 public class YahooUserProfile extends BaseUserProfile {
+	
+	private YahooProfile profile;
 
 	public YahooUserProfile() {
 		super(AuthProvider.Yahoo);
@@ -39,26 +41,82 @@ public class YahooUserProfile extends BaseUserProfile {
 
 	@Override
 	public String getUserID() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.profile.guid;
 	}
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.profile.nickname;
 	}
 
 	@Override
 	public String getProfileLink() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.profile.profileUrl;
 	}
 
 	@Override
 	public String getProfileImageURL() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.profile.image == null) {
+			return null;
+		}
+		
+		return this.profile.image.imageUrl;
+	}
+	
+	/**
+	 * @return the profile
+	 */
+	public YahooProfile getProfile() {
+		return profile;
+	}
+	
+	// STATIC classes follow
+	
+	public static class YahooProfile {
+		
+		public String uri;
+		
+		public String guid;
+		
+		public boolean bdRestricted;
+		
+		public String created;
+		
+		public YahooProfileEmail[] emails;
+		
+		public YahooProfileImage image;
+		
+		public String memberSince;
+		
+		public String nickname;
+		
+		public String profileUrl;
+		
+		public boolean isConnected;
+	}
+	
+	public static class YahooProfileEmail {
+		
+		public String handle;
+		
+		public long id;
+		
+		public boolean primary;
+		
+		public String type;
+		
+	}
+	
+	public static class YahooProfileImage {
+		
+		public int height;
+		
+		public String imageUrl;
+		
+		public String size;
+		
+		public int width;
+		
 	}
 
 }
