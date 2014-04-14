@@ -43,7 +43,7 @@ import com.sangupta.satya.client.impl.DropBoxAuthClient;
 public class TestDropBoxClient {
 
 	public static void main(String[] args) {
-		String redirectURL = "http://localhost/satya/oauth/dropbox";
+		String redirectURL = "https://opensource.brickred.com/satya/oauth/dropbox";
 		
 		AuthConfig config = new AuthConfig();
 		

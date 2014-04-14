@@ -50,7 +50,7 @@ public class FacebookAuthClient extends BaseAuthClient {
 	 * @param keySecretPair
 	 */
 	public FacebookAuthClient(KeySecretPair keySecretPair) {
-		super(new FacebookOAuthServiceImpl(keySecretPair), FacebookScopes.EMAIL);
+		super(new FacebookOAuthServiceImpl(keySecretPair), FacebookScopes.PUBLISH_ACTIONS);
 	}
 
 	@Override
