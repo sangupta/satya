@@ -210,8 +210,9 @@ public final class AuthManager {
 	 *            the {@link HttpServletRequest} that was received after
 	 *            authentication from the OAuth server
 	 * 
-	 * @param redirectURL
-	 *            the redirect URL used for authentication
+	 * @param tokenAndUrl
+	 *            the {@link TokenAndUrl} instance that was received during
+	 *            authentication URL generation
 	 * 
 	 * @return an instance of {@link AuthenticatedUser} that can then make calls
 	 *         to the OAuth server on behalf of the user
@@ -237,11 +238,42 @@ public final class AuthManager {
 	 * @param authProvider
 	 *            the {@link AuthProvider} for which we are verifying the user
 	 * 
+	 * @param request
+	 *            the {@link HttpServletRequest} that was received after
+	 *            authentication from the OAuth server
+	 * 
+	 * @param tokenAndUrl
+	 *            the {@link TokenAndUrl} instance that was received during
+	 *            authentication URL generation
+	 * 
+	 * @return an instance of {@link AuthenticatedUser} that can then make calls
+	 *         to the OAuth server on behalf of the user
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the given {@link AuthProvider} is <code>null</code>
+	 */
+	public static AuthenticatedUser authenticateUser(AuthProvider authProvider, HttpServletRequest request, TokenAndUrl tokenAndUrl) {
+		AuthClient client = AUTH_CLIENTS.get(authProvider);
+		if(client == null) {
+			throw new AssertionError("No authentication client configured for the given provider: " + authProvider);
+		}
+		
+		return client.verifyUser(request, tokenAndUrl);
+	}
+	
+	/**
+	 * Authenticate the user for the given {@link AuthProvider}, the auth token
+	 * and the redirect URL that was supplied for authentication.
+	 * 
+	 * @param authProvider
+	 *            the {@link AuthProvider} for which we are verifying the user
+	 * 
 	 * @param token
 	 *            the authentication token as fetched from the OAuth server
 	 * 
-	 * @param redirectURL
-	 *            the redirect URL used for authentication
+	 * @param tokenAndUrl
+	 *            the {@link TokenAndUrl} instance that was received during
+	 *            authentication URL generation
 	 * 
 	 * @return an instance of {@link AuthenticatedUser} that can then make calls
 	 *         to the OAuth server on behalf of the user
