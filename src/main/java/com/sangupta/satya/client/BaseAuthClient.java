@@ -112,9 +112,14 @@ public abstract class BaseAuthClient implements AuthClient {
 			return null;
 		}
 		
-		// find the actual code
-		String code = request.getParameter("code");
+		errorCode = request.getParameter("error_code");
+		if(AssertUtils.isNotEmpty(errorCode)) {
+			// TODO: make checked exceptions so that user's know what's happening
+			return null;
+		}
 		
+		// find the actual code
+		String code = request.getParameter(this.service.getVerificationCodeParamName());
 		return this.verifyUser(code, tokenAndUrl);
 	}
 	
