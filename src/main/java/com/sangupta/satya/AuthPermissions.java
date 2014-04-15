@@ -83,7 +83,7 @@ public enum AuthPermissions {
 				return SatyaUtils.EMPTY_STRING_LIST;
 		}
 		
-		return null;
+		return SatyaUtils.EMPTY_STRING_LIST;
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public enum AuthPermissions {
 				break;
 		}
 		
-		return null;
+		return SatyaUtils.EMPTY_STRING_LIST;
 	}
 
 }

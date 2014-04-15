@@ -99,7 +99,7 @@ public class AuthConfig {
 			throw new IllegalArgumentException("KeySecretPair cannot be null");
 		}
 		
-		if(AssertUtils.isEmpty(scopes)) {
+		if(scopes == null) {
 			throw new IllegalArgumentException("Default scopes cannot be null/empty");
 		}
 		
