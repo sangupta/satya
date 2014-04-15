@@ -48,18 +48,18 @@ public class TestDropBoxClient {
 		AuthConfig config = new AuthConfig();
 		
 		KeySecretPair dropBox = new KeySecretPair(ApiKeys.DropBox, ApiKeys.DropBoxSecret);
-		config.addConfig(AuthProvider.DropBox, dropBox);
+		config.addConfig(AuthProvider.DropBox, dropBox, "");
 		
 		AuthManager.loadConfig(config);
 		
-		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.DropBox, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.DropBox, redirectURL, AuthPermissions.BASIC_PROFILE);
 		System.out.println(tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.DropBox, request, tokenAndUrl);
 		System.out.println("User: " + user);
 		
 		if(user != null) {

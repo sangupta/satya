@@ -43,14 +43,20 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
+import com.sangupta.satya.SatyaUtils;
 
 /**
+ * Abtsract implementation of the {@link AuthClient} that provides most of the
+ * common functionality.
  * 
  * @author sangupta
- *
+ * @since 1.0
  */
 public abstract class BaseAuthClient implements AuthClient {
 	
+	/**
+	 * My logger instance
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseAuthClient.class);
 	
 	/**
@@ -62,18 +68,44 @@ public abstract class BaseAuthClient implements AuthClient {
 	/**
 	 * The scopes to use when requesting permissions
 	 */
-	protected final String scope;
+	protected final String defaultScopes;
 	
 	/**
 	 * Constructor that takes in the final {@link OAuthService} to use and the
 	 * scopes that we need to interact with.
 	 * 
 	 * @param service
+	 *            the {@link OAuthService} to be used
+	 * 
 	 * @param scope
+	 *            the default scopes for this client
 	 */
 	public BaseAuthClient(OAuthService service, String scope) {
+		if(service == null) {
+			throw new IllegalArgumentException("OAuthService to be used cannot be null");
+		}
+		
 		this.service = service;
-		this.scope = scope;
+		this.defaultScopes = scope;
+	}
+	
+	/**
+	 * Constructor that takes in the final {@link OAuthService} to use and the
+	 * scopes that we need to interact with.
+	 * 
+	 * @param service
+	 *            the {@link OAuthService} to be used
+	 * 
+	 * @param scopes
+	 *            the list of all default scopes for this client
+	 */
+	public BaseAuthClient(OAuthService service, String... scopes) {
+		if(service == null) {
+			throw new IllegalArgumentException("OAuthService to be used cannot be null");
+		}
+		
+		this.service = service;
+		this.defaultScopes = SatyaUtils.merge(scopes, getScopeMergingCharacter());
 	}
 	
 	/**
@@ -81,7 +113,23 @@ public abstract class BaseAuthClient implements AuthClient {
 	 */
 	@Override
 	public TokenAndUrl getLoginRedirectURL(String successUrl) {
-		return service.getLoginURL(successUrl, scope);
+		return this.service.getLoginURL(successUrl, this.defaultScopes);
+	}
+	
+	/**
+	 * @see com.sangupta.satya.client.AuthClient#getLoginRedirectURL(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public TokenAndUrl getLoginRedirectURL(String successUrl, String scope) {
+		return this.service.getLoginURL(successUrl, scope);
+	}
+	
+	/**
+	 * @see com.sangupta.satya.client.AuthClient#getLoginRedirectURL(java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public TokenAndUrl getLoginRedirectURL(String successUrl, String... scopes) {
+		return this.service.getLoginURL(successUrl, SatyaUtils.merge(scopes, this.getScopeMergingCharacter()));
 	}
 	
 	/**
@@ -90,6 +138,15 @@ public abstract class BaseAuthClient implements AuthClient {
 	 * @return
 	 */
 	protected abstract AuthProvider getAuthProvider();
+	
+	/**
+	 * Return the character that needs to be used to merge different scopes
+	 * 
+	 * @return
+	 */
+	protected char getScopeMergingCharacter() {
+		return ',';
+	}
 	
 	/**
 	 * Return the {@link OAuthService} being used.

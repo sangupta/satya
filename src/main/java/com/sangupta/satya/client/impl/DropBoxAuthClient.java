@@ -48,8 +48,8 @@ public class DropBoxAuthClient extends BaseAuthClient {
 	 * 
 	 * @param keySecretPair
 	 */
-	public DropBoxAuthClient(KeySecretPair keySecretPair) {
-		super(new DropBoxOAuthServiceImpl(keySecretPair), "");
+	public DropBoxAuthClient(KeySecretPair keySecretPair, String...scopes) {
+		super(new DropBoxOAuthServiceImpl(keySecretPair), scopes);
 	}
 
 	@Override

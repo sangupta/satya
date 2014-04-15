@@ -50,13 +50,13 @@ public class TestYahooClient {
 		
 		// load values
 		KeySecretPair yahoo = new KeySecretPair(ApiKeys.Yahoo, ApiKeys.YahooSecret);
-		config.addConfig(AuthProvider.Yahoo, yahoo);
+		config.addConfig(AuthProvider.Yahoo, yahoo, "");
 		
 		// initialize AuthManager
 		AuthManager.loadConfig(config);
 		
 		// get redirect URL
-		TokenAndUrl loginURL = AuthManager.getAuthRedirectURL(AuthProvider.Yahoo, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl loginURL = AuthManager.getAuthRedirectURL(AuthProvider.Yahoo, redirectURL, AuthPermissions.BASIC_PROFILE);
 		System.out.println("Open the URL in browser: " + loginURL);
 		
 		// read code as provided by the browser
@@ -67,7 +67,7 @@ public class TestYahooClient {
 		request1.addParameter("code", code);
 		
 		// get the user from the yahoo api
-		AuthenticatedUser user = AuthManager.authenticateUser(request1, loginURL);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.Yahoo, request1, loginURL);
 		
 		// print user details
 		System.out.println(user);

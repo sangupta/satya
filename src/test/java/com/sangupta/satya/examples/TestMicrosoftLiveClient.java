@@ -23,6 +23,7 @@ package com.sangupta.satya.examples;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
+import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -50,13 +51,13 @@ public class TestMicrosoftLiveClient {
 		
 		// load values
 		KeySecretPair microsoftLive = new KeySecretPair(ApiKeys.MicrosoftLive, ApiKeys.MicrosoftLiveSecret);
-		config.addConfig(AuthProvider.MicrosoftLive, microsoftLive);
+		config.addConfig(AuthProvider.MicrosoftLive, microsoftLive, MicrosoftLiveScopes.READ_USER_PROFILE);
 		
 		// initialize AuthManager
 		AuthManager.loadConfig(config);
 		
 		// get redirect URL
-		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.MicrosoftLive, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.MicrosoftLive, redirectURL, AuthPermissions.BASIC_PROFILE);
 		System.out.println("Open the URL in browser: " + tokenAndUrl);
 		
 		// read code as provided by the browser
@@ -67,7 +68,7 @@ public class TestMicrosoftLiveClient {
 		request.addParameter("code", code);
 		
 		// get the user from the yahoo api
-		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.MicrosoftLive, request, tokenAndUrl);
 		
 		// print user details
 		System.out.println(user);

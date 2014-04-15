@@ -27,7 +27,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
 import com.sangupta.jerry.oauth.service.impl.MicrosoftLiveOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
@@ -45,8 +44,8 @@ import com.sangupta.satya.user.impl.MicrosoftLiveUserProfile;
  */
 public class MicrosoftLiveAuthClient extends BaseAuthClient {
 	
-	public MicrosoftLiveAuthClient(KeySecretPair pair) {
-		super(new MicrosoftLiveOAuthServiceImpl(pair), MicrosoftLiveScopes.READ_USER_PROFILE);
+	public MicrosoftLiveAuthClient(KeySecretPair pair, String... scopes) {
+		super(new MicrosoftLiveOAuthServiceImpl(pair), scopes);
 	}
 
 	@Override

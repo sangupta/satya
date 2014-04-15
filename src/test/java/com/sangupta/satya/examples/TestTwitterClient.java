@@ -46,18 +46,18 @@ public class TestTwitterClient {
 		AuthConfig config = new AuthConfig();
 		
 		KeySecretPair twitter = new KeySecretPair(ApiKeys.Twitter, ApiKeys.TwitterSecret);
-		config.addConfig(AuthProvider.Twitter, twitter);
+		config.addConfig(AuthProvider.Twitter, twitter, "");
 		
 		AuthManager.loadConfig(config);
 		
-		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Twitter, AuthPermissions.DEFAULT, "oob");
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Twitter, "oob", AuthPermissions.BASIC_PROFILE);
 		System.out.println("Login URL: " + tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.Twitter, request, tokenAndUrl);
 		System.out.println("User: " + user);
 
 		if(user != null) {

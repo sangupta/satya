@@ -21,6 +21,12 @@
 
 package com.sangupta.satya;
 
+import com.sangupta.jerry.oauth.scope.FacebookScopes;
+import com.sangupta.jerry.oauth.scope.GithubScopes;
+import com.sangupta.jerry.oauth.scope.GoogleScopes;
+import com.sangupta.jerry.oauth.scope.LinkedInScopes;
+import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
+
 /**
  * Various permissions that a user may seek while authenticating with
  * the social network.
@@ -28,10 +34,90 @@ package com.sangupta.satya;
  * @author sangupta
  * @since 1.0
  */
-public class AuthPermissions {
+public enum AuthPermissions {
 	
-	public static final AuthPermissions DEFAULT = new AuthPermissions();
+	BASIC_PROFILE,
+	
+	PUBLISH;
 
-	public final boolean authenticate = true;
+	public String[] getScopes(AuthProvider provider) {
+		switch(this) {
+			case BASIC_PROFILE:
+				return basicProfileScopes(provider);
+				
+			case PUBLISH:
+				return publishScopes(provider);
+		}
+		
+		return null;
+	}
+
+	/**
+	 * @param provider
+	 * @return
+	 */
+	private String[] basicProfileScopes(AuthProvider provider) {
+		switch(provider) {
+			case DropBox:
+				return SatyaUtils.EMPTY_STRING_LIST;
+				
+			case Facebook:
+				return new String[] { FacebookScopes.EMAIL };
+				
+			case Github:
+				return new String[] { GithubScopes.PUBLIC_INFO };
+				
+			case Google:
+				return new String[] { GoogleScopes.EMAIL, GoogleScopes.PROFILE };
+				
+			case LinkedIn:
+				return new String[] { LinkedInScopes.FULL_PROFILE };
+				
+			case MicrosoftLive:
+				return new String[] { MicrosoftLiveScopes.READ_USER_PROFILE };
+				
+			case Twitter:
+				return SatyaUtils.EMPTY_STRING_LIST;
+				
+			case Yahoo:
+				return SatyaUtils.EMPTY_STRING_LIST;
+		}
+		
+		return null;
+	}
 	
+	/**
+	 * @param provider
+	 * @return
+	 */
+	private String[] publishScopes(AuthProvider provider) {
+		switch(provider) {
+			case DropBox:
+				break;
+				
+			case Facebook:
+				return new String[] { FacebookScopes.PUBLISH_ACTIONS };
+				
+			case Github:
+				break;
+				
+			case Google:
+				return new String[] { GoogleScopes.EMAIL, GoogleScopes.PROFILE };
+				
+			case LinkedIn:
+				break;
+				
+			case MicrosoftLive:
+				break;
+				
+			case Twitter:
+				break;
+				
+			case Yahoo:
+				break;
+		}
+		
+		return null;
+	}
+
 }

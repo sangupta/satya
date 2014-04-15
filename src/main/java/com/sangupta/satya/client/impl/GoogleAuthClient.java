@@ -33,7 +33,7 @@ import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
-import com.sangupta.satya.user.impl.GithubUserProfile;
+import com.sangupta.satya.user.impl.GoogleUserProfile;
 
 /**
  * {@link AuthClient} for http://google.com
@@ -43,8 +43,16 @@ import com.sangupta.satya.user.impl.GithubUserProfile;
  */
 public class GoogleAuthClient extends BaseAuthClient {
 	
-	public GoogleAuthClient(KeySecretPair pair) {
-		super(new GoogleOAuthServiceImpl(pair), "email profile");
+	public GoogleAuthClient(KeySecretPair pair, String... scopes) {
+		super(new GoogleOAuthServiceImpl(pair), scopes);
+	}
+	
+	/**
+	 * @see com.sangupta.satya.client.BaseAuthClient#getScopeMergingCharacter()
+	 */
+	@Override
+	protected char getScopeMergingCharacter() {
+		return ' ';
 	}
 
 	@Override
@@ -72,7 +80,7 @@ public class GoogleAuthClient extends BaseAuthClient {
 			
 			@Override
 			public Class<? extends UserProfile> getUserProfileClass() {
-				return GithubUserProfile.class;
+				return GoogleUserProfile.class;
 			}
 		};
 	}

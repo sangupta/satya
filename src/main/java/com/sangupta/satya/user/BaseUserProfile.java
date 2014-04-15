@@ -40,8 +40,14 @@ import com.sangupta.satya.UserProfile;
  */
 public abstract class BaseUserProfile implements UserProfile {
 	
+	/**
+	 * The {@link AuthProvider} associated with this {@link UserProfile}
+	 */
 	private final AuthProvider authProvider;
 
+	/**
+	 * The email of the user
+	 */
 	protected String email;
 	
 	/**

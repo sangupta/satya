@@ -27,7 +27,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
-import com.sangupta.jerry.oauth.scope.GithubScopes;
 import com.sangupta.jerry.oauth.service.impl.GithubOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
@@ -49,8 +48,8 @@ public class GithubAuthClient extends BaseAuthClient {
 	 * 
 	 * @param keySecretPair
 	 */
-	public GithubAuthClient(KeySecretPair keySecretPair) {
-		super(new GithubOAuthServiceImpl(keySecretPair), GithubScopes.PUBLIC_INFO);
+	public GithubAuthClient(KeySecretPair keySecretPair, String... scopes) {
+		super(new GithubOAuthServiceImpl(keySecretPair), scopes);
 	}
 
 	@Override

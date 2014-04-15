@@ -73,12 +73,14 @@ public abstract class BaseAuthenticatedUser implements AuthenticatedUser {
 	protected UserProfile userProfile;
 	
 	/**
+	 * Create a new instance of {@link BaseAuthenticatedUser} and initialize the
+	 * minimum parameters
 	 * 
-	 * @param accessToken
-	 * @param accessSecret
-	 * @param refreshToken
-	 * @param expiresIn
 	 * @param authClient
+	 *            the {@link AuthClient} associated with this user
+	 * 
+	 * @param rawParameters
+	 *            the raw parameters obtained from the authorization call
 	 */
 	public BaseAuthenticatedUser(AuthClient authClient, Map<String, String> rawParameters) {
 		this.authClient = authClient;

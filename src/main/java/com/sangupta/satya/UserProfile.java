@@ -35,16 +35,46 @@ import java.security.Principal;
  */
 public interface UserProfile extends Principal {
 	
+	/**
+	 * Return the userID associated with the user profile
+	 * 
+	 * @return the userID
+	 */
 	public String getUserID();
 	
+	/**
+	 * Return the email address associated with the user profile
+	 * 
+	 * @return the email address
+	 */
 	public String getEmail();
 	
+	/**
+	 * Return the display name associated with the user profile
+	 * 
+	 * @return the display name
+	 */
 	public String getDisplayName();
 	
+	/**
+	 * Return the profile link associated with the user profile
+	 * 
+	 * @return the profile link
+	 */
 	public String getProfileLink();
 	
+	/**
+	 * Return the profile image URL associated with the user profile
+	 * 
+	 * @return the profile image URL
+	 */
 	public String getProfileImageURL();
 	
+	/**
+	 * Return the {@link AuthProvider} associated with the user profile
+	 * 
+	 * @return the {@link AuthProvider}
+	 */
 	public AuthProvider getAuthProvider();
 
 }

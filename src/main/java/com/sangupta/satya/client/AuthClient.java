@@ -40,29 +40,50 @@ import com.sangupta.satya.AuthenticatedUser;
 public interface AuthClient {
 	
 	/**
-	 * Obtain the login URL that the user needs to be redirected to for
-	 * gaining permissions.
+	 * Obtain the login URL that the user needs to be redirected to for gaining
+	 * permissions.
 	 * 
 	 * @param successUrl
-	 * @return
+	 *            the callback success url to be used
+	 * 
+	 * @return the {@link TokenAndUrl} instance containing verifier tokens and
+	 *         the redirect URL for authentication
 	 */
 	public TokenAndUrl getLoginRedirectURL(String successUrl);
 	
+	public TokenAndUrl getLoginRedirectURL(String successUrl, String scope);
+	
+	public TokenAndUrl getLoginRedirectURL(String successUrl, String... scopes);
+	
 	/**
-	 * Verify that a user did grant us permissions so that we can invoke
-	 * further API calls on his/her behalf.
+	 * Verify that a user did grant us permissions so that we can invoke further
+	 * API calls on his/her behalf.
 	 * 
 	 * @param request
-	 * @param redirectURL
-	 * @return
+	 *            the {@link HttpServletRequest} received from OAuth server
+	 * 
+	 * @param tokenAndUrl
+	 *            the {@link TokenAndUrl} instance that was generated using
+	 *            login call
+	 * 
+	 * @return the {@link AuthenticatedUser} instance if successful,
+	 *         <code>null</code> if failed
 	 */
 	public AuthenticatedUser verifyUser(HttpServletRequest request, TokenAndUrl tokenAndUrl);
 	
 	/**
+	 * Verify that a user did grant us permissions so that we can invoke further
+	 * API calls on his/her behalf.
 	 * 
 	 * @param verifier
-	 * @param redirectURL
-	 * @return
+	 *            the verification token provided by the OAuth server
+	 * 
+	 * @param tokenAndUrl
+	 *            the {@link TokenAndUrl} instance that was generated using
+	 *            login call
+	 * 
+	 * @return the {@link AuthenticatedUser} instance if successful,
+	 *         <code>null</code> if failed
 	 */
 	public AuthenticatedUser verifyUser(String verifier, TokenAndUrl tokenAndUrl);
 
@@ -74,10 +95,21 @@ public interface AuthClient {
 	public boolean signOut();
 
 	/**
-	 * Make a HTTP GET request and return its response.
-	 *  
+	 * Make a HTTP GET request and return its response interpreting it as JSON
+	 * and populating the class instance provided
+	 * 
+	 * @param accessPair
+	 *            the user-specific {@link KeySecretPair} pair to be used
+	 * 
 	 * @param url
-	 * @return
+	 *            the URL to which the request is to be made
+	 * 
+	 * @param the
+	 *            {@link Class} instance to be used for population via GSON
+	 * 
+	 * @return the object of {@link Class} provided, which has been populated
+	 *         via the JSON obtained from the server, or <code>null</code> if
+	 *         call failed
 	 */
 	public <T> T getUsingJson(KeySecretPair accessPair, String url, Class<T> clazz);
 
@@ -85,14 +117,18 @@ public interface AuthClient {
 	 * Sign the given {@link WebRequest} with OAuth credentials.
 	 * 
 	 * @param accessPair
+	 *            the user-specific {@link KeySecretPair} pair to be used
+	 * 
 	 * @param request
+	 *            the {@link WebRequest} that needs to be signed
+	 * 
 	 */
 	public void signRequest(KeySecretPair accessPair, WebRequest request);
 	
 	/**
 	 * Return the associated {@link OAuthService} being used.
 	 * 
-	 * @return
+	 * @return the {@link OAuthService} associated with this client
 	 */
 	public OAuthService getOAuthService();
 	

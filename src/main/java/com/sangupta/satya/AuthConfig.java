@@ -40,10 +40,14 @@ import com.sangupta.jerry.util.AssertUtils;
  */
 public class AuthConfig {
 
-	private final Map<AuthProvider, KeySecretPair> config = new HashMap<AuthProvider, KeySecretPair>();
+	/**
+	 * Holds the configuration list that have been aded
+	 * 
+	 */
+	private final Map<AuthProvider, AuthProviderConfiguration> config = new HashMap<AuthProvider, AuthProviderConfiguration>();
 	
 	/**
-	 * Add a new key-secret pair for the given provider.
+	 * Add a new {@link AuthProviderConfiguration} for the given {@link AuthProvider}.
 	 * 
 	 * @param authProvider
 	 *            the authentication provider against which keys need to be
@@ -52,13 +56,41 @@ public class AuthConfig {
 	 * @param pair
 	 *            the key-secret pair that needs to be added
 	 * 
+	 * @param scope
+	 *            the default scope that needs to be used with the
+	 *            authentication provider
+	 * 
 	 * @throws IllegalArgumentException
 	 *             if the authProvider is null
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the keySecretPair is null
 	 */
-	public void addConfig(AuthProvider authProvider, KeySecretPair keySecretPair) {
+	public void addConfig(AuthProvider authProvider, KeySecretPair keySecretPair, String scope) {
+		addConfig(authProvider, keySecretPair, new String[] { scope });
+	}
+	
+	/**
+	 * Add a new {@link AuthProviderConfiguration} for the given {@link AuthProvider}.
+	 * 
+	 * @param authProvider
+	 *            the authentication provider against which keys need to be
+	 *            added
+	 * 
+	 * @param pair
+	 *            the key-secret pair that needs to be added
+	 * 
+	 * @param scopes
+	 *            the list of all default scopes that need to be used with the
+	 *            authentication provider
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the authProvider is null
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the keySecretPair is null
+	 */
+	public void addConfig(AuthProvider authProvider, KeySecretPair keySecretPair, String... scopes) {
 		if(authProvider == null) {
 			throw new IllegalArgumentException("AuthProvider cannot be null");
 		}
@@ -67,16 +99,22 @@ public class AuthConfig {
 			throw new IllegalArgumentException("KeySecretPair cannot be null");
 		}
 		
-		this.config.put(authProvider, keySecretPair);
+		if(AssertUtils.isEmpty(scopes)) {
+			throw new IllegalArgumentException("Default scopes cannot be null/empty");
+		}
+		
+		this.config.put(authProvider, new AuthProviderConfiguration(keySecretPair, scopes));
 	}
 
 	/**
-	 * Return the {@link KeySecretPair} associated with this provider.
+	 * Return the {@link AuthProviderConfiguration} instance associated with this {@link AuthProvider}.
 	 * 
 	 * @param provider
-	 * @return
+	 *            the provider for which the {@link KeySecretPair} is needed
+	 * 
+	 * @return the {@link AuthProviderConfiguration} if found, <code>null</code> otherwise
 	 */
-	public KeySecretPair getConfig(AuthProvider provider) {
+	public AuthProviderConfiguration getConfig(AuthProvider provider) {
 		if(provider == null) {
 			return null;
 		}
@@ -85,9 +123,10 @@ public class AuthConfig {
 	}
 	
 	/**
-	 * Return the list of all auth providers in this {@link AuthConfig} instance.
+	 * Return the list of all auth providers in this {@link AuthConfig}
+	 * instance.
 	 * 
-	 * @return
+	 * @return the list of all {@link AuthProvider}s configured
 	 */
 	public Set<AuthProvider> getProviders() {
 		return this.config.keySet();

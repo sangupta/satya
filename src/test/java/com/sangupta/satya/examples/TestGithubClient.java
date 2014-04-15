@@ -23,6 +23,7 @@ package com.sangupta.satya.examples;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
+import com.sangupta.jerry.oauth.scope.GithubScopes;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -48,18 +49,18 @@ public class TestGithubClient {
 		AuthConfig config = new AuthConfig();
 		
 		KeySecretPair github = new KeySecretPair(ApiKeys.Github, ApiKeys.GithubSecret);
-		config.addConfig(AuthProvider.Github, github);
+		config.addConfig(AuthProvider.Github, github, GithubScopes.PUBLIC_INFO);
 		
 		AuthManager.loadConfig(config);
 		
-		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Github, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.Github, redirectURL, AuthPermissions.BASIC_PROFILE);
 		System.out.println(tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.Github, request, tokenAndUrl);
 		System.out.println("User: " + user);
 		
 		if(user != null) {

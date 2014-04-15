@@ -27,7 +27,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.satya.client.AuthClient;
@@ -87,39 +86,39 @@ public final class AuthManager {
 		}
 		
 		for(AuthProvider provider : providers) {
-			KeySecretPair pair = authConfig.getConfig(provider);
+			AuthProviderConfiguration configuration = authConfig.getConfig(provider);
 			
 			switch(provider) {
 				case Google:
-					AUTH_CLIENTS.put(provider, new GoogleAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new GoogleAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case Facebook:
-					AUTH_CLIENTS.put(provider, new FacebookAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new FacebookAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case Twitter:
-					AUTH_CLIENTS.put(provider, new TwitterAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new TwitterAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case Yahoo:
-					AUTH_CLIENTS.put(provider, new YahooAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new YahooAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case MicrosoftLive:
-					AUTH_CLIENTS.put(provider, new MicrosoftLiveAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new MicrosoftLiveAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case LinkedIn:
-					AUTH_CLIENTS.put(provider, new LinkedInAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new LinkedInAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case Github:
-					AUTH_CLIENTS.put(provider, new GithubAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new GithubAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				case DropBox:
-					AUTH_CLIENTS.put(provider, new DropBoxAuthClient(pair));
+					AUTH_CLIENTS.put(provider, new DropBoxAuthClient(configuration.keySecretPair, configuration.scopes));
 					continue;
 					
 				default:
@@ -140,11 +139,11 @@ public final class AuthManager {
 	 *            a case-insensitive representation of the authentication
 	 *            provider.
 	 * 
-	 * @param permissions
-	 *            the {@link AuthPermissions} which are needed
-	 * 
 	 * @param callbackURL
 	 *            the callback URL at which the OAuth server will call us back
+	 * 
+	 * @param permissions
+	 *            the {@link AuthPermissions} which are needed
 	 * 
 	 * @return the login URL to which a user may be redirected, or asked to open
 	 *         in a browser to complete the authentication workflow
@@ -154,9 +153,9 @@ public final class AuthManager {
 	 *             <code>null</code>, or if the callback URL is
 	 *             <code>null/empty</code>
 	 */
-	public static TokenAndUrl getAuthRedirectURL(String provider, AuthPermissions permissions, String callbackURL) {
+	public static TokenAndUrl getAuthRedirectURL(String provider, String callbackURL, AuthPermissions permissions) {
 		AuthProvider authProvider = AuthProvider.fromString(provider);
-		return getAuthRedirectURL(authProvider, permissions, callbackURL);
+		return getAuthRedirectURL(authProvider, callbackURL, permissions);
 	}
 	
 	/**
@@ -167,11 +166,11 @@ public final class AuthManager {
 	 *            the {@link AuthProvider} for which authentication URL is being
 	 *            seeked
 	 * 
-	 * @param permissions
-	 *            the {@link AuthPermissions} which are needed
-	 * 
 	 * @param callbackURL
 	 *            the callback URL at which the OAuth server will call us back
+	 * 
+	 * @param permissions
+	 *            the {@link AuthPermissions} which are needed
 	 * 
 	 * @return the login URL to which a user may be redirected, or asked to open
 	 *         in a browser to complete the authentication workflow
@@ -181,7 +180,7 @@ public final class AuthManager {
 	 *             <code>null</code>, or if the callback URL is
 	 *             <code>null/empty</code>
 	 */
-	public static TokenAndUrl getAuthRedirectURL(AuthProvider provider, AuthPermissions permissions, String callbackURL) {
+	public static TokenAndUrl getAuthRedirectURL(AuthProvider provider, String callbackURL, AuthPermissions permissions) {
 		if(provider == null) {
 			throw new IllegalArgumentException("Authentication provider cannot be null");
 		}
@@ -200,7 +199,7 @@ public final class AuthManager {
 			throw new IllegalArgumentException("Authentication provider not available in the system");
 		}
 		
-		return client.getLoginRedirectURL(callbackURL);
+		return client.getLoginRedirectURL(callbackURL, permissions.getScopes(provider));
 	}
 
 	/**

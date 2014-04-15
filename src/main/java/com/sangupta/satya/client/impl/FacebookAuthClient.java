@@ -27,7 +27,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
 import com.sangupta.jerry.oauth.extractor.UrlParamTokenExtractor;
-import com.sangupta.jerry.oauth.scope.FacebookScopes;
 import com.sangupta.jerry.oauth.service.impl.FacebookOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
@@ -49,8 +48,8 @@ public class FacebookAuthClient extends BaseAuthClient {
 	 * 
 	 * @param keySecretPair
 	 */
-	public FacebookAuthClient(KeySecretPair keySecretPair) {
-		super(new FacebookOAuthServiceImpl(keySecretPair), FacebookScopes.PUBLISH_ACTIONS);
+	public FacebookAuthClient(KeySecretPair keySecretPair, String... scopes) {
+		super(new FacebookOAuthServiceImpl(keySecretPair), scopes);
 	}
 
 	@Override

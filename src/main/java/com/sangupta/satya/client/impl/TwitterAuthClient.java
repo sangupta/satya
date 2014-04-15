@@ -44,6 +44,10 @@ import com.sangupta.satya.user.impl.TwitterUserProfile;
  */
 public class TwitterAuthClient extends BaseAuthClient {
 	
+	public TwitterAuthClient(KeySecretPair keySecretPair, String... scopes) {
+		super(new TwitterOAuthServiceImpl(keySecretPair), scopes);
+	}
+	
 	@Override
 	protected AuthProvider getAuthProvider() {
 		return AuthProvider.Twitter;
@@ -54,10 +58,6 @@ public class TwitterAuthClient extends BaseAuthClient {
 		return UrlParamTokenExtractor.INSTANCE;
 	}
 
-	public TwitterAuthClient(KeySecretPair pair) {
-		super(new TwitterOAuthServiceImpl(pair), "");
-	}
-	
 	@Override
 	protected FieldNamingPolicy getFieldNamingPolicy() {
 		return FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;

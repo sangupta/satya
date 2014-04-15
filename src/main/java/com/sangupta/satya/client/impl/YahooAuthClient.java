@@ -43,8 +43,8 @@ import com.sangupta.satya.user.impl.YahooUserProfile;
  */
 public class YahooAuthClient extends BaseAuthClient {
 	
-	public YahooAuthClient(KeySecretPair pair) {
-		super(new YahooOAuthServiceImpl(pair), "");
+	public YahooAuthClient(KeySecretPair pair, String... scopes) {
+		super(new YahooOAuthServiceImpl(pair), scopes);
 	}
 
 	@Override

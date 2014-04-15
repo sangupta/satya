@@ -26,7 +26,6 @@ import java.util.Map;
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.extractor.JSONTokenExtractor;
 import com.sangupta.jerry.oauth.extractor.TokenExtractor;
-import com.sangupta.jerry.oauth.scope.LinkedInScopes;
 import com.sangupta.jerry.oauth.service.impl.LinkedInOAuthServiceImpl;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
@@ -34,7 +33,7 @@ import com.sangupta.satya.UserProfile;
 import com.sangupta.satya.client.AuthClient;
 import com.sangupta.satya.client.BaseAuthClient;
 import com.sangupta.satya.user.BaseAuthenticatedUser;
-import com.sangupta.satya.user.impl.GithubUserProfile;
+import com.sangupta.satya.user.impl.LinkedInUserProfile;
 
 /**
  * {@link AuthClient} for http://linkedin.com
@@ -44,8 +43,8 @@ import com.sangupta.satya.user.impl.GithubUserProfile;
  */
 public class LinkedInAuthClient extends BaseAuthClient {
 	
-	public LinkedInAuthClient(KeySecretPair pair) {
-		super(new LinkedInOAuthServiceImpl(pair), LinkedInScopes.FULL_PROFILE);
+	public LinkedInAuthClient(KeySecretPair pair, String... scopes) {
+		super(new LinkedInOAuthServiceImpl(pair), scopes);
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class LinkedInAuthClient extends BaseAuthClient {
 			
 			@Override
 			public Class<? extends UserProfile> getUserProfileClass() {
-				return GithubUserProfile.class;
+				return LinkedInUserProfile.class;
 			}
 		};
 	}

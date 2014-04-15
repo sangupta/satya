@@ -23,6 +23,7 @@ package com.sangupta.satya.examples;
 
 import com.sangupta.jerry.oauth.domain.KeySecretPair;
 import com.sangupta.jerry.oauth.domain.TokenAndUrl;
+import com.sangupta.jerry.oauth.scope.LinkedInScopes;
 import com.sangupta.jerry.util.ConsoleUtils;
 import com.sangupta.satya.ApiKeys;
 import com.sangupta.satya.AuthConfig;
@@ -48,18 +49,18 @@ public class TestLinkedInClient {
 		AuthConfig config = new AuthConfig();
 		
 		KeySecretPair linkedIn = new KeySecretPair(ApiKeys.LinkedIn, ApiKeys.LinkedInSecret);
-		config.addConfig(AuthProvider.LinkedIn, linkedIn);
+		config.addConfig(AuthProvider.LinkedIn, linkedIn, LinkedInScopes.BASIC_PROFILE);
 		
 		AuthManager.loadConfig(config);
 		
-		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.LinkedIn, AuthPermissions.DEFAULT, redirectURL);
+		TokenAndUrl tokenAndUrl = AuthManager.getAuthRedirectURL(AuthProvider.LinkedIn, redirectURL, AuthPermissions.BASIC_PROFILE);
 		System.out.println(tokenAndUrl);
 		
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("code", code);
-		AuthenticatedUser user = AuthManager.authenticateUser(request, tokenAndUrl);
+		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.LinkedIn, request, tokenAndUrl);
 		System.out.println("User: " + user);
 		
 		if(user != null) {
