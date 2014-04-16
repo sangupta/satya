@@ -64,7 +64,7 @@ public class TestYahooClient {
 		
 		// create a mock request to continue workflow
 		MockHttpServletRequest request1 = new MockHttpServletRequest();
-		request1.addParameter("code", code);
+		request1.addParameter("oauth_verifier", code);
 		
 		// get the user from the yahoo api
 		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.Yahoo, request1, loginURL);

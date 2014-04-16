@@ -56,7 +56,7 @@ public class TestTwitterClient {
 		String code = ConsoleUtils.readLine("code: ", true);
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.addParameter("code", code);
+		request.addParameter("oauth_verifier", code);
 		AuthenticatedUser user = AuthManager.authenticateUser(AuthProvider.Twitter, request, tokenAndUrl);
 		System.out.println("User: " + user);
 
