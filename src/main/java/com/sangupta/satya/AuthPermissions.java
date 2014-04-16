@@ -62,7 +62,7 @@ public enum AuthPermissions {
 				return SatyaUtils.EMPTY_STRING_LIST;
 				
 			case Facebook:
-				return new String[] { FacebookScopes.EMAIL };
+				return new String[] { FacebookScopes.EMAIL, FacebookScopes.BASIC_INFO };
 				
 			case Github:
 				return new String[] { GithubScopes.PUBLIC_INFO };
