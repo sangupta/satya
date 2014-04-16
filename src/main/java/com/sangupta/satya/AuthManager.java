@@ -57,7 +57,7 @@ public final class AuthManager {
 	 * constructs
 	 */
 	private AuthManager() {
-		
+		// intentionally left blank
 	}
 
 	/**
@@ -203,34 +203,6 @@ public final class AuthManager {
 	}
 
 	/**
-	 * Authenticate the user from an incoming request.
-	 * 
-	 * @param request
-	 *            the {@link HttpServletRequest} that was received after
-	 *            authentication from the OAuth server
-	 * 
-	 * @param tokenAndUrl
-	 *            the {@link TokenAndUrl} instance that was received during
-	 *            authentication URL generation
-	 * 
-	 * @return an instance of {@link AuthenticatedUser} that can then make calls
-	 *         to the OAuth server on behalf of the user
-	 * 
-	 * @throws AssertionError
-	 *             if we are unable to detect the {@link AuthClient} from the
-	 *             provided {@link HttpServletRequest}
-	 */
-	public static AuthenticatedUser authenticateUser(HttpServletRequest request, TokenAndUrl tokenAndUrl) {
-		// decipher the authprovider based on the request
-		AuthClient client = decipherAuthClientFromRequest(request);
-		if(client == null) {
-			throw new AssertionError("Unable to detect the authentication client from the callback that was received");
-		}
-		
-		return client.verifyUser(request, tokenAndUrl);
-	}
-	
-	/**
 	 * Authenticate the user for the given {@link AuthProvider}, the auth token
 	 * and the redirect URL that was supplied for authentication.
 	 * 
@@ -289,22 +261,6 @@ public final class AuthManager {
 		return client.verifyUser(token, tokenAndUrl);
 	}
 
-	/**
-	 * Find from the request the {@link AuthClient} that should manage this callback.
-	 * 
-	 * @param request
-	 * @return
-	 */
-	private static AuthClient decipherAuthClientFromRequest(HttpServletRequest request) {
-		// TODO: fix this using the user-agent or otherwise
-		if(AUTH_CLIENTS.size() == 1) {
-			return AUTH_CLIENTS.get(AUTH_CLIENTS.keySet().iterator().next());
-					
-		}
-		
-		return AUTH_CLIENTS.get(AuthProvider.Yahoo);
-	}
-	
 	/**
 	 * Return the {@link AuthClient} for the given {@link AuthProvider}.
 	 * 

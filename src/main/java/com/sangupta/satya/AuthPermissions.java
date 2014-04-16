@@ -93,28 +93,28 @@ public enum AuthPermissions {
 	private String[] publishScopes(AuthProvider provider) {
 		switch(provider) {
 			case DropBox:
-				break;
+				return SatyaUtils.EMPTY_STRING_LIST;
 				
 			case Facebook:
 				return new String[] { FacebookScopes.PUBLISH_ACTIONS };
 				
 			case Github:
-				break;
+				return new String[] { GithubScopes.PUBLIC_INFO, GithubScopes.GIST, GithubScopes.NOTIFICATIONS, GithubScopes.WRITE_ORG, GithubScopes.WRITE_REPO_HOOK, GithubScopes.USER };
 				
 			case Google:
 				return new String[] { GoogleScopes.EMAIL, GoogleScopes.PROFILE };
 				
 			case LinkedIn:
-				break;
+				return new String[] { LinkedInScopes.FULL_PROFILE, LinkedInScopes.NETWORK_UPDATES, LinkedInScopes.MESSAGES, LinkedInScopes.GROUPS };
 				
 			case MicrosoftLive:
-				break;
+				return new String[] { MicrosoftLiveScopes.READ_USER_PROFILE, MicrosoftLiveScopes.OFFLINE_ACCESS };
 				
 			case Twitter:
-				break;
+				return SatyaUtils.EMPTY_STRING_LIST;
 				
 			case Yahoo:
-				break;
+				return SatyaUtils.EMPTY_STRING_LIST;
 		}
 		
 		return SatyaUtils.EMPTY_STRING_LIST;
