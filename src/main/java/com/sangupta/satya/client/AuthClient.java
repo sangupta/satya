@@ -51,8 +51,35 @@ public interface AuthClient {
 	 */
 	public TokenAndUrl getLoginRedirectURL(String successUrl);
 	
+	/**
+	 * Obtain the login URL that the user needs to be redirected to for gaining
+	 * permissions.
+	 * 
+	 * @param successUrl
+	 *            the callback success url to be used
+	 * 
+	 * @param scope
+	 *            the scope to be used when generating the login redirect URL
+	 * 
+	 * @return the {@link TokenAndUrl} instance containing verifier tokens and
+	 *         the redirect URL for authentication
+	 */
 	public TokenAndUrl getLoginRedirectURL(String successUrl, String scope);
 	
+	/**
+	 * Obtain the login URL that the user needs to be redirected to for gaining
+	 * permissions.
+	 * 
+	 * @param successUrl
+	 *            the callback success url to be used
+	 * 
+	 * @param scopes
+	 *            the list of scopes to be used when generating the login
+	 *            redirect URL
+	 * 
+	 * @return the {@link TokenAndUrl} instance containing verifier tokens and
+	 *         the redirect URL for authentication
+	 */
 	public TokenAndUrl getLoginRedirectURL(String successUrl, String... scopes);
 	
 	/**
