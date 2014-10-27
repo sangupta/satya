@@ -155,6 +155,7 @@ public final class AuthManager {
 	 */
 	public static TokenAndUrl getAuthRedirectURL(String provider, String callbackURL, AuthPermissions permissions) {
 		AuthProvider authProvider = AuthProvider.fromString(provider);
+		
 		return getAuthRedirectURL(authProvider, callbackURL, permissions);
 	}
 	

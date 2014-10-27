@@ -99,6 +99,11 @@ public abstract class BaseAuthenticatedUser implements AuthenticatedUser {
 		}
 	}
 	
+	public BaseAuthenticatedUser(AuthClient authClient, KeySecretPair userAccessPair) {
+		this.authClient = authClient;
+		this.userAccessPair = userAccessPair;
+	}
+	
 	/**
 	 * Return the URL to be used for fetching the user profile.
 	 *  
