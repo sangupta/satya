@@ -44,7 +44,7 @@ import com.sangupta.satya.client.impl.GoogleAuthClient;
 public class TestGoogleClient {
 	
 	public static void main(String[] args) {
-		String redirectURL = "https://www.multiplx.com/oauth2callback";
+		String redirectURL = "https://dev.sangupta.com/oauth2callback";
 		
 		AuthConfig config = new AuthConfig();
 		

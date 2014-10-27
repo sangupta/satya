@@ -26,6 +26,7 @@ import com.sangupta.jerry.oauth.scope.GithubScopes;
 import com.sangupta.jerry.oauth.scope.GoogleScopes;
 import com.sangupta.jerry.oauth.scope.LinkedInScopes;
 import com.sangupta.jerry.oauth.scope.MicrosoftLiveScopes;
+import com.sangupta.jerry.util.StringUtils;
 
 /**
  * Various permissions that a user may seek while authenticating with
@@ -59,7 +60,7 @@ public enum AuthPermissions {
 	private String[] basicProfileScopes(AuthProvider provider) {
 		switch(provider) {
 			case DropBox:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 				
 			case Facebook:
 				return new String[] { FacebookScopes.EMAIL, FacebookScopes.BASIC_INFO };
@@ -77,13 +78,13 @@ public enum AuthPermissions {
 				return new String[] { MicrosoftLiveScopes.READ_USER_PROFILE };
 				
 			case Twitter:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 				
 			case Yahoo:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 		}
 		
-		return SatyaUtils.EMPTY_STRING_LIST;
+		return StringUtils.EMPTY_STRING_LIST;
 	}
 	
 	/**
@@ -93,7 +94,7 @@ public enum AuthPermissions {
 	private String[] publishScopes(AuthProvider provider) {
 		switch(provider) {
 			case DropBox:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 				
 			case Facebook:
 				return new String[] { FacebookScopes.PUBLISH_ACTIONS };
@@ -111,13 +112,13 @@ public enum AuthPermissions {
 				return new String[] { MicrosoftLiveScopes.READ_USER_PROFILE, MicrosoftLiveScopes.OFFLINE_ACCESS };
 				
 			case Twitter:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 				
 			case Yahoo:
-				return SatyaUtils.EMPTY_STRING_LIST;
+				return StringUtils.EMPTY_STRING_LIST;
 		}
 		
-		return SatyaUtils.EMPTY_STRING_LIST;
+		return StringUtils.EMPTY_STRING_LIST;
 	}
 
 }

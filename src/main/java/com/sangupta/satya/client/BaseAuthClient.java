@@ -41,9 +41,9 @@ import com.sangupta.jerry.oauth.service.OAuth2ServiceImpl;
 import com.sangupta.jerry.oauth.service.OAuthService;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.GsonUtils;
+import com.sangupta.jerry.util.StringUtils;
 import com.sangupta.satya.AuthProvider;
 import com.sangupta.satya.AuthenticatedUser;
-import com.sangupta.satya.SatyaUtils;
 
 /**
  * Abtsract implementation of the {@link AuthClient} that provides most of the
@@ -105,7 +105,7 @@ public abstract class BaseAuthClient implements AuthClient {
 		}
 		
 		this.service = service;
-		this.defaultScopes = SatyaUtils.merge(scopes, getScopeMergingCharacter());
+		this.defaultScopes = StringUtils.merge(scopes, getScopeMergingCharacter());
 	}
 	
 	/**
@@ -129,7 +129,7 @@ public abstract class BaseAuthClient implements AuthClient {
 	 */
 	@Override
 	public TokenAndUrl getLoginRedirectURL(String successUrl, String... scopes) {
-		return this.service.getLoginURL(successUrl, SatyaUtils.merge(scopes, this.getScopeMergingCharacter()));
+		return this.service.getLoginURL(successUrl, StringUtils.merge(scopes, this.getScopeMergingCharacter()));
 	}
 	
 	/**
