@@ -94,7 +94,7 @@ public enum AuthProvider {
 			return Github;
 		}
 		
-		throw new IllegalArgumentException("Unknown Authprovider: The value does not match any known provider");
+		throw new IllegalArgumentException("Unknown AuthProvider: The value does not match any known provider");
 	}
 
 }
