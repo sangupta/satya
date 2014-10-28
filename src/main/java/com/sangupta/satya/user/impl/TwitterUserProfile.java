@@ -112,6 +112,25 @@ public class TwitterUserProfile extends BaseUserProfile {
 	public TwitterUserProfile() {
 		super(AuthProvider.Twitter);
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int)(this.id ^ (this.id >>> 32));
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		
+		if(!(obj instanceof TwitterUserProfile)) {
+			return false;
+		}
+		
+		TwitterUserProfile other = (TwitterUserProfile) obj;
+		return this.id == other.id;
+	}
 
 	@Override
 	public String getUserID() {
