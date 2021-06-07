@@ -65,7 +65,7 @@
 		<dependency>
 		    <groupId>ch.qos.logback</groupId>
 		    <artifactId>logback-classic</artifactId>
-		    <version>1.1.2</version>
+		    <version>1.2.0</version>
 		</dependency>
 
 		<!-- For servlet API - so that we can read requests coming back from OAuth providers -->
